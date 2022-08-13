@@ -1,0 +1,20 @@
+A rough guide how to open Natgen project in eclipse.
+
+1: get Eclipse IDE, it should be version for java (you chosen it during installagtion)
+2: Create a folder somwhere that will be Eclipse workspace (btw its not the only way)
+3: Clone NationGen-N repo into this workspace (In Git Desktop choose to contribute into right place, dont forget)
+4: Open Eclipse and choose workspace (ur folder containing folder of cloned natgen) as your workspace.
+5: On the main screen choose to import existing git project
+6: Choose a local one and point at cloned natgen folder
+7: it should find some .git file.  Confirm
+8: You should get your project now opened.
+
+add Junit4 into building path if its not here (this thing is used for debugging. in srctest etc)
+
+=========================
+So, to run the program you need to right click on NationGen-N project at the top and shoose a 'run as' option.
+There you can ran it as a java application (to start it as an executable), however you need to chose which thing you want to ran.
+nationgen GUI (GUI-nationgen.GUI it will be at the top) or spritegen are probably the things you wanted to run
+as the first one is application itself.
+
+Second option it to run it as a Junit thing. its a debugging tool that uses srctest to check data and other stuff as far as i understood it

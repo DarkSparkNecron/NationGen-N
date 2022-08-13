@@ -1,4 +1,4 @@
-package nationGen.diagnostics;
+package srctest.nationGen.diagnostics;
 
 import com.elmokki.Generic;
 import nationGen.NationGen;

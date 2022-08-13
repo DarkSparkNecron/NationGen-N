@@ -1,9 +1,13 @@
-package nationGen.misc;
+package srctest.nationGen.misc;
 
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import nationGen.misc.Args;
+import nationGen.misc.Command;
+import nationGen.misc.Tags;
 
 import java.util.Optional;
 

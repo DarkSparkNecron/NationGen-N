@@ -1,11 +1,16 @@
-﻿0.7.0-RC13 (Date goes here)
+﻿0.8.0-DEV (Date goes here)
 ----------------------------------------------------------
+Note: from this version its NatGen-N, however it includes some unreleased features. Should put N somewhere in the version number lol.
 
 Code
 ----------------------------------------------------------
-- 
+- Fixed some errors in srctest caused by wrong package declaration and missing imports
+- Added txt file to help people in figuring out how to open the project
 
-Content
+Content 
+-----------------------------------------------------------
+
+Content (From unreleased 0.7.0-RC13, which at this point counts as 0.7.13 by me, cuz 13 pre-releases cmon)
 -----------------------------------------------------------
 - Pygmy headresses now provide 5 to 10 invulnerability
 - Pygmy only and other austral themes where pygmies are troops now have buffs. Mainly allowing access to worse 5 gold pygmies (those were implemeted before, but not for the aforementioned themes)
@@ -15,6 +20,25 @@ Content
 - Elite Elite Pygmies now have a chance at leather and iron caps
 
 
+=============================
+0.7.0-RC12 (14th of Jan 2021)
+----------------------------------------------------------
+note: this is the last release of Elmokkis nationgen so far, this changelog entry was added after NG-N forking.
+
+Code
+----------------------------------------------------------
+
+Content
+-----------------------------------------------------------
+- Elite crabmen chassis cost bumped from 30g to 60g
+- Normal crabmen pincer should now be intrinsic weapon
+- Heat and cold spreading dominions should now appear to hot and cold nations respectively, instead of vice versa
+- Research bonus +3 filters renamed to distinguish them from each other
+- Nadir theme probability adjustments
+- Vestal and hound summoning priests fixed
+
+
+=================================
 0.7.0-RC11 (13th of January 2021)
 ----------------------------------------------------------
 

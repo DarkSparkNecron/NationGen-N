@@ -1,8 +1,10 @@
-package nationGen.misc;
+package srctest.nationGen.misc;
 
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import nationGen.misc.FileUtil;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;

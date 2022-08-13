@@ -64,3 +64,5 @@ fabric.properties
 
 settings.txt
 .settings/org.eclipse.core.resources.prefs
+/bin/
+/bin/

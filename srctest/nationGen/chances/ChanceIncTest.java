@@ -1,8 +1,11 @@
-package nationGen.chances;
+package srctest.nationGen.chances;
 
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import nationGen.chances.ChanceInc;
+import nationGen.chances.ChanceIncData;
 
 
 public class ChanceIncTest {

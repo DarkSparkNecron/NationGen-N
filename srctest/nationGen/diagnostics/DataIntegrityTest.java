@@ -1,4 +1,4 @@
-package nationGen.diagnostics;
+package srctest.nationGen.diagnostics;
 
 
 import com.elmokki.Dom3DB;
