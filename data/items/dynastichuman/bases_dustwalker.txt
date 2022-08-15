@@ -5,7 +5,7 @@
 #needs hands dustwalker
 #needstype armor dustwalker
 #needstype legs dustwalker
-#define "#gcost 40"
+#define "#gcost 60"
 #define "#rpcost 10010"
 #define "#size 2"
 #define "#hp 25"
