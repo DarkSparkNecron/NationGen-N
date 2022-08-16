@@ -1,4 +1,18 @@
-﻿0.8.0-DEV (Date goes here)
+﻿todo:
+Ground zotz
+update DB
+add ressize to crabs
+make illhybrids RP cheaper
+do something with taurs
+remove magic:acces button (or at least check what it do)
+add PREVIEW sites for montag units (foulspawns)
+sacred power slider now will do something
+generate uwrec units for uwbuild nations.
+summoning sites are better (but mb not only them)
+update nation descriptions and version to NG-N
+themes should be written in nat descr
+
+0.8.0-DEV (Date goes here)
 ----------------------------------------------------------
 Note: from this version its NatGen-N, however it includes some unreleased features. Should put N somewhere in the version number lol.
 
@@ -9,6 +23,7 @@ Code
 
 Content 
 -----------------------------------------------------------
+- Nadir and dustwalkers got nerf to dust (gold cost incr for both, rp incr for nadir)
 
 Content (From unreleased 0.7.0-RC13, which at this point counts as 0.7.13 by me, cuz 13 pre-releases cmon)
 -----------------------------------------------------------
