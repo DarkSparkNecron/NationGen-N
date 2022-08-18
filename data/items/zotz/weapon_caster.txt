@@ -6,6 +6,8 @@
 #sprite /graphics/weapon/mage/orb.png
 #recolormask self
 #tag "tier 3"
+#offsetx 7
+#offsety 30
 #enditem
 
 #newitem
@@ -15,6 +17,8 @@
 #tag "tier 2"
 #tag "tier 3"
 #tag "eliteversion orbsceptre"
+#offsetx 7
+#offsety 30
 #enditem
 
 #newitem
@@ -24,6 +28,8 @@
 #recolormask /graphics/weapon/mage/sceptre_orb_recolormask.png
 #theme "superior"
 #tag "tier 3"
+#offsetx 7
+#offsety 30
 #enditem
 
 #newitem
@@ -31,6 +37,8 @@
 #gameid 499
 #sprite /graphics/weapon/mage/pestle.png
 #tag "tier 1"
+#offsetx 7
+#offsety 30
 #enditem
 
 #newitem
@@ -39,6 +47,8 @@
 #sprite /graphics/weapon/mage/dagger.png
 #tag "tier 1"
 #tier 2
+#offsetx 10
+#offsety 31
 #enditem
 
 #newitem
@@ -46,8 +56,8 @@
 #gameid 153
 #sprite /graphics/hoburg/weapon/stick.png
 #theme "primitive"
-#offsetx -9
-#offsety -14
+#offsetx 8
+#offsety 20
 #tier 1
 #tier 2
 #enditem
@@ -56,8 +66,8 @@
 #id stickstaff
 #gameid 7
 #sprite /graphics/hoburg/weapon/stick.png
-#offsetx -9
-#offsety -14
+#offsetx 8
+#offsety 20
 #tier 1
 #tier 2
 #enditem

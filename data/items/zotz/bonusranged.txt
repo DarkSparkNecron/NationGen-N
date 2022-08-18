@@ -3,6 +3,8 @@
 #gameid 21
 #sprite /graphics/weapon/standard/javelin1.png
 #tag "name infantry 'Javelineer'"
+#offsetx 8 -- -4
+#offsety 31  --8
 #enditem
 
 #newitem
@@ -10,6 +12,8 @@
 #gameid 21
 #sprite /graphics/weapon/standard/javelin2.png
 #tag "name infantry 'Javelineer'"
+#offsetx 8
+#offsety 31
 #enditem
 
 #newitem -- Throwing axe
@@ -36,8 +40,10 @@
 #renderslot "weapon"
 #tag "name infantry 'Chakram Thrower'"
 #tag "tierunique"
-#offsetx 5
-#offsety 7
+#offsetx 23 --11
+#offsety 40 --17
+--offsetx 5
+--offsety 7
 #enditem
 
 #newitem
@@ -58,4 +64,6 @@
 #tag "maxprot 12"
 #tag "tierunique"
 #basechance 0.5
+#offsetx 8
+#offsety 31
 #enditem

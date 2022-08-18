@@ -7,7 +7,7 @@
 #sprite /graphics/abysian/mounts/scorpion.png
 #armor
 #offsetx 37
-#offsety 20
+#offsety -17   --was 20, and now should be -20
 #needs overlay scorpion_overlay
 #define "#size 5"
 #define "#mapmove 8"
@@ -36,7 +36,7 @@
 #sprite /graphics/mounts/standard/jaguar.png
 #armor
 #offsetx 6
-#offsety 18
+#offsety -14  --can be -15
 #define "#size 2"
 #define "#mapmove 20"
 #define "#ap 18"
@@ -65,7 +65,7 @@
 #sprite /graphics/mounts/standard/cavegrub.png
 #armor
 #offsetx 48
-#offsety 25
+#offsety -11
 #define "#size 4"
 #define "#mapmove 8"
 #define "#ap 5"
@@ -92,7 +92,7 @@
 #sprite /graphics/mounts/standard/spider1.png
 #armor
 #offsetx 47
-#offsety 20
+#offsety -17 -- -20
 #needs overlay spider_overlay
 #define "#size 4"
 #define "#mapmove 18"
@@ -138,7 +138,7 @@
 #basechance 1
 #tag "minprot 6"
 #offsetx 15
-#offsety 22
+#offsety -13
 #enditem
 
 
