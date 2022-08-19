@@ -1,12 +1,13 @@
-package srctest.nationGen.misc;
+package nationGen.misc;
+//package srctest.nationGen.misc;
 
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import nationGen.misc.Arg;
-import nationGen.misc.ArgParser;
-import nationGen.misc.Args;
+//import nationGen.misc.Arg;
+//import nationGen.misc.ArgParser;
+//import nationGen.misc.Args;
 
 
 public class ArgTest {
