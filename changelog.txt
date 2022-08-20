@@ -13,6 +13,7 @@ Code
 - Dominions database updated up to v5.57
 - Magic:Access button was fixed, now it doesn't return MageWithAccess restriction as it did for some reason (was made for 0.7.13)
 - Now writing more info into nation description
+- Sacred power slider now impacts sacred units stats, not only average divan level of priests. (boost is roughly 1.5 per slider step)
 
 Content 
 -----------------------------------------------------------
@@ -20,6 +21,7 @@ Content
 - Zots are finally grounded and can rest
 - Crabmans got nerfed cuz they are too protected and have great morale. baseprot (15->10), mor (13->9), added ressize 4.
 - Added new primitive theme for crabmans as well as theme chance redone. Plus crabs can be naked. Getting low-tech themes chance is high.
+- Starchilds made rpcost cheaper (vanilla 10k->8k) as they are main troops in illitid nations, which is not intended as it seems.
 
 Content (From unreleased 0.7.0-RC13, which at this point counts as 0.7.13 by me, cuz 13 pre-releases cmon)
 -----------------------------------------------------------

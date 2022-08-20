@@ -2,7 +2,7 @@ ToDo List:
 
 -------------------- Balance
 1)add ressize to crabs --Done. Added new primitive theme, possibility to get naked crabs, themes chance redone and nerf of baseprot (15->10), morale (13->9). Also ressize 4 for them
-2)make illhybrids RP cheaper
+2)make illhybrids RP cheaper --Done
 3)do something with taurs
 4)summoning sites are better (but mb not only them)
 
@@ -14,5 +14,5 @@ future)Extract color used for troops and put it somewhere in DM sebug section at
 
 -------------------- Mixed (Hardest)
 1)add PREVIEW sites for montag units (foulspawns)
-2)sacred power slider now will do something
+2)sacred power slider now will do something --Done (thnks geepope)
 3)generate uwrec units for uwbuild nations.
