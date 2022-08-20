@@ -21,6 +21,8 @@ Code
 - Added txt file to help people in figuring out how to open and run the project
 - Through eternal suffering project is now runnable and buildable
 - Changed version of NatGen to 0.8.0DEV and renewed some labels
+- program now writes an amount of time spent for generation after it is completed (was made in 0.7.13)
+- Dominions database updated up to v5.57
 
 Content 
 -----------------------------------------------------------
