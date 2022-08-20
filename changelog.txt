@@ -1,16 +1,4 @@
-﻿todo:
-update DB
-add ressize to crabs
-make illhybrids RP cheaper
-do something with taurs
-remove magic:acces button (or at least check what it do)
-add PREVIEW sites for montag units (foulspawns)
-sacred power slider now will do something
-generate uwrec units for uwbuild nations.
-summoning sites are better (but mb not only them)
-update nation descriptions and version to NG-N
-themes should be written in nat descr
-
+﻿
 0.8.0-DEV (Date goes here)
 ----------------------------------------------------------
 Note: from this version its NatGen-N, however it includes some unreleased features. Should put N somewhere in the version number lol.
@@ -18,16 +6,18 @@ Note: from this version its NatGen-N, however it includes some unreleased featur
 Code
 ----------------------------------------------------------
 - Fixed some errors in srctest caused by wrong package declaration and missing imports
-- Added txt file to help people in figuring out how to open and run the project
+- Added txt file to help people in figuring out how to open and run the project. And ToDo list to help indev (working without issues pages)
 - Through eternal suffering project is now runnable and buildable
 - Changed version of NatGen to 0.8.0DEV and renewed some labels
-- program now writes an amount of time spent for generation after it is completed (was made in 0.7.13)
+- Program now writes an amount of time spent for generation after it is completed (was made in 0.7.13)
 - Dominions database updated up to v5.57
 
 Content 
 -----------------------------------------------------------
 - Nadir and dustwalkers got nerf to dust (gold cost incr for both, rp incr for nadir)
 - Zots are finally grounded and can rest
+- Crabmans got nerfed cuz they are too protected and have great morale. baseprot (15->10), mor (13->9), added ressize 4.
+- Added new primitive theme for crabmans as well as theme chance redone. Plus crabs can be naked. Getting low-tech themes chance is high.
 
 Content (From unreleased 0.7.0-RC13, which at this point counts as 0.7.13 by me, cuz 13 pre-releases cmon)
 -----------------------------------------------------------

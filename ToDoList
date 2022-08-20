@@ -1,0 +1,20 @@
+ToDo List:
+
+-------------------- Balance
+1)add ressize to crabs --Done. Added new primitive theme, possibility to get naked crabs, themes chance redone and nerf of baseprot (15->10), morale (13->9). Also ressize 4 for them
+2)make illhybrids RP cheaper
+3)do something with taurs
+4)summoning sites are better (but mb not only them)
+
+-------------------- Code
+1)remove magic:acces button (or at least check what it do)
+2)update nation descriptions and version to NG-N
+3)themes should be written in nat descr
+
+-------------------- Mixed (Hardest)
+1)add PREVIEW sites for montag units (foulspawns)
+2)sacred power slider now will do something
+3)generate uwrec units for uwbuild nations.
+
+
+//ps base crabman prot is 15 and morale 13. moved to 10 and 9

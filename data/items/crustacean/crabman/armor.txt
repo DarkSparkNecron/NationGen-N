@@ -1,4 +1,13 @@
--- Sharkskin armor
+--- Naked
+
+#newitem
+#name "unarmoured"
+#armor
+#basechance 4
+#theme "primitive"
+#enditem
+
+--- Sharkskin armor
 
 #newitem
 #name "sharkskin_armor"
@@ -6,6 +15,7 @@
 #sprite /graphics/crustacean/crabman/armor/sharkskin.png
 #recolormask /graphics/crustacean/crabman/armor/armor_recolormask.png
 #armor
+#basechance 2
 #theme "primitive"
 #enditem
 
@@ -35,7 +45,7 @@
 #gameid bronzescale_full
 #sprite /graphics/crustacean/crabman/armor/bronzescale_full.png
 #recolormask /graphics/crustacean/crabman/armor/armor_recolormask.png
-#armor 
+#armor
 #theme "bronze"
 #enditem
 
