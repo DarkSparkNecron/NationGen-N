@@ -9,7 +9,7 @@
 #chanceinc moduleid herogen *100
 
 #command "#gcost 14"
-#command "#rpcost 10000"
+#command "#rpcost 8000" --was 10000, but decreased as temp measure due to starchilds being main troops
 #command "#hp 15"
 #command "#prot 2"
 #command "#mr 12"

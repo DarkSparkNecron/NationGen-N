@@ -7,14 +7,12 @@ ToDo List:
 4)summoning sites are better (but mb not only them)
 
 -------------------- Code
-1)remove magic:acces button (or at least check what it do)
-2)update nation descriptions and version to NG-N
-3)themes should be written in nat descr
+1)remove magic:acces button (or at least check what it do) --Done. problem was already fixed for 0.7.13
+2)update nation descriptions and version to NG-N --Done
+3)themes should be written in nat descr --Done
+future)Extract color used for troops and put it somewhere in DM sebug section at least, or even use in scoregraphs
 
 -------------------- Mixed (Hardest)
 1)add PREVIEW sites for montag units (foulspawns)
 2)sacred power slider now will do something
 3)generate uwrec units for uwbuild nations.
-
-
-//ps base crabman prot is 15 and morale 13. moved to 10 and 9

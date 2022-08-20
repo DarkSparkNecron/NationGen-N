@@ -4,7 +4,6 @@
 #type techlevel
 #name default
 #basechance 2
-#chanceinc era 2 
 #chanceinc era 3 -1
 #themeinc theme advanced *0.5
 #themeinc theme bronze *1

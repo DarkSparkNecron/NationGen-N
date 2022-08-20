@@ -922,7 +922,11 @@ public class Nation {
 		lines.add("-- Generated with " + races.get(0) + " race themes: " + races.get(0).themefilters);
 		lines.add("-- Generated with " + races.get(1) + " race themes: " + races.get(1).themefilters);
 		lines.add("---------------------------------------------------------------");
-
+		
+		String natdescr = "A glorious NationGen-N nation! Generated from seed " + seed + " with settings integer " + 
+				   nationGen.settings.getSettingInteger()+ " in NatGen Version " + nationGen.version +" ("+nationGen.date+")"+"\n\n"+"Generated with themes: " + this.nationthemes +"\n"+"Generated with " + races.get(0) + " race themes: " + races.get(0).themefilters+"\n"+"Generated with " + races.get(1) + " race themes: " + races.get(1).themefilters;
+		//"\n" for line
+		
 		//writeNationInfo(tw);
 		lines.add("#selectnation " + nationid);
 		lines.add("#clear");
@@ -931,8 +935,7 @@ public class Nation {
 		lines.add("#epithet \"" + epithet + "\"");
 	
 	
-		lines.add("#descr \"" + "A glorious NationGen nation! Generated from seed " + seed + " with settings integer " + 
-				   nationGen.settings.getSettingInteger() + "\"");
+		lines.add("#descr \"" + natdescr + "\"");
 	
 		lines.add("#summary \"" + summary + "\"");
 		lines.add("#brief \"No description\"");
