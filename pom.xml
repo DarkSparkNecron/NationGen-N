@@ -46,7 +46,7 @@
 						<configuration>
 							<executable>${basedir}/release-all.bat</executable>
 							<arguments>
-								<argument>${java.home}</argument>
+								<argument>"C:\Users\User\Desktop\Natgen\jdk-11.0.2"</argument>
 								<argument>${project.build.finalName}</argument>
 							</arguments>
 						</configuration>

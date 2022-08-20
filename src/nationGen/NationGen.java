@@ -20,7 +20,7 @@ import nationGen.units.Unit;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+//import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.Duration;
@@ -35,7 +35,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class NationGen
 {
 	public static String version = "0.8.0DEV";
-	public static String date = "19th of August 2022";
+	public static String date = "20th of August 2022";
 	
 	private List<NationRestriction> restrictions;
 	
@@ -488,7 +488,7 @@ public class NationGen
 	// TODO: Support saving anywhere
 	public void write(List<Nation> nations)
 	{
-		String og_modDirectory = "nationgen_" + sanitizeForFilenames(this.modname);
+		String og_modDirectory = "natgenn_" + sanitizeForFilenames(this.modname);
 		String modDirectory = og_modDirectory;
 		
 		int suffix = 0;
@@ -550,7 +550,7 @@ public class NationGen
 	{
 		List<String> lines = new ArrayList<>();
 		// Description!
-		lines.add("-- NationGen - " + modDirectory);
+		lines.add("-- NationGen-N - " + modDirectory);
 		lines.add("-----------------------------------");
 		
 		lines.add("-- Generated with version " + version + ".");
@@ -574,7 +574,7 @@ public class NationGen
 		
 		// Actual mod definition
 		lines.add("#modname \"NationGen - " + this.modname + "\"");
-		lines.add("#description \"A NationGen generated nation!\"");
+		lines.add("#description \"A NationGen-N generated nations awaits you!\"");
 		
 		// Banner!
 		lines.add("#icon \"" + modDirectory + "/banner.tga\"");

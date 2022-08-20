@@ -1,4 +1,4 @@
-A rough guide how to open Natgen project in eclipse.
+A rough guide how to open Natgen project in eclipse.  Made by Dark Spark after several days of suffering.
 
 1: get Eclipse IDE, it should be version for java (you chosen it during installagtion)
 2: Create a folder somwhere that will be Eclipse workspace (btw its not the only way)
@@ -11,6 +11,13 @@ A rough guide how to open Natgen project in eclipse.
 
 add Junit4 into building path if its not here (this thing is used for debugging. in srctest etc)
 
+9: natgen is a Maven Project, so if it doesnt have something like "Maven Dependancies" or srctest spotted with wrong package declaration
+then convert Eclipse project to Maven project. You can do it in File>Convert or just google it.
+10: Actually its ready to use. In run-as you will have some maven options, i recommend (but not sure) to add this configuration: First R click on project>run-as>maven build...
+11: Set user settings to our pom.xml and as goals "Clean Verify" without "" and also you can make your name for this launch configuration.
+12: uhh add OpenJDK 11.0.2 somewhere and make in pom.xml JAVA_PATh argument for release-all.bat to be link to JDK like "C:\Users\User\Desktop\Natgen\jdk-11.0.2" 
+
+and btw JDK is only for purposes of compiling as original bats were created long ago and now uncompitible with modern solutions, at least because they lack jmods folder.
 =========================
 So, to run the program you need to right click on NationGen-N project at the top and shoose a 'run as' option.
 There you can ran it as a java application (to start it as an executable), however you need to chose which thing you want to ran.
@@ -18,3 +25,13 @@ nationgen GUI (GUI-nationgen.GUI it will be at the top) or spritegen are probabl
 as the first one is application itself.
 
 Second option it to run it as a Junit thing. its a debugging tool that uses srctest to check data and other stuff as far as i understood it
+
+Plus there are several other useful thing you sometimes want to run.
+Also in core folder "mods" will appear if you generated something, here will be your generated packs you made within eclipse
+=========================
+To change version. you need to change it in src>nationGen>NationGen and also in pom.xml.
+To compile project, or make a release you need to build a Maven project, it will run tests and other stuff automatically
+leaving you with "target folder". there're some useful thing but you need to go to target>runtime-images>windows
+here will be a folder with compiled natgen. ready to release.
+
+if it fails with message that some scary folder doesnt have jmods folder, check pom.xml to put into release-all.bat path to JDK 11.0.2 (i put one into the project) in JAVA_PATH argument

@@ -1,5 +1,4 @@
 ﻿todo:
-Ground zotz
 update DB
 add ressize to crabs
 make illhybrids RP cheaper
@@ -19,11 +18,14 @@ Note: from this version its NatGen-N, however it includes some unreleased featur
 Code
 ----------------------------------------------------------
 - Fixed some errors in srctest caused by wrong package declaration and missing imports
-- Added txt file to help people in figuring out how to open the project
+- Added txt file to help people in figuring out how to open and run the project
+- Through eternal suffering project is now runnable and buildable
+- Changed version of NatGen to 0.8.0DEV and renewed some labels
 
 Content 
 -----------------------------------------------------------
 - Nadir and dustwalkers got nerf to dust (gold cost incr for both, rp incr for nadir)
+- Zots are finally grounded and can rest
 
 Content (From unreleased 0.7.0-RC13, which at this point counts as 0.7.13 by me, cuz 13 pre-releases cmon)
 -----------------------------------------------------------
