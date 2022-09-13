@@ -206,6 +206,55 @@ public class SiteGenerator {
 		
 	}
 	
+	public static void generatePreviews(Nation n, NationGenAssets assets)
+	{
+		for(List<Unit> lu : n.unitlists.values())
+		{
+			for(Unit nu : lu)
+				if(nu.tags.containsName("montagunit"))
+					createMontagPreview(n,nu,false);
+		}
+		
+		for(List<Unit> lu : n.comlists.values())
+		{
+			for(Unit nu : lu)
+				if(nu.tags.containsName("montagunit"))
+					createMontagPreview(n,nu,true);
+		}
+	}
+	
+	public static void createMontagPreview(Nation n, Unit Master, Boolean IsCom)
+	{
+		Site s = new Site();
+		//s.name = "PRVW: "+ Master.getName();
+		String montagValue = Master.getStringCommandValue("#firstshape", "");
+		s.name = montagValue; //this is to find Master unit at the naming stage and use its name
+		if(IsCom == false)
+		{
+		 for(List<Unit> lu : n.unitlists.values()) //stolen from unit as idk how those things works
+		 {
+			 for(Unit nu : lu)
+			 {
+				 if(nu.getStringCommandValue("#montag", "").equals(montagValue) && nu.tags.containsName("hasmontag")&& Master != nu)
+					s.troops.add(nu);
+			 }
+		 }
+		}
+		else
+		{
+			for(List<Unit> lu : n.comlists.values())
+			{
+				for(Unit nu : lu)
+				{
+					if(nu.getStringCommandValue("#montag", "").equals(montagValue) && nu.tags.containsName("hasmontag")&& Master != nu)
+						s.coms.add(nu);
+				}
+			}
+		}	
+	    s.IsPreviewSite=1; //0 is regular site, 1 is for montag preview site
+	    s.level=0;
+		n.sites.add(s); //add site
+	}
 	
 	
 	

@@ -576,6 +576,7 @@ public class Nation {
 
 		generateMonsters();
 		SiteGenerator.generateSites(this, assets);
+		SiteGenerator.generatePreviews(this, assets);
 		generateSpells();
 		generateFlag();
 		getStartAffinity();
@@ -952,7 +953,10 @@ public class Nation {
 	   
 		for(Site site : this.sites)
 		{
+			if(site.IsPreviewSite==0)
 			lines.add("#startsite \"" + site.name +  "\"");
+			else
+			lines.add("#futuresite \"" + site.name +  "\"");
 		}
 		lines.add("");
 	   

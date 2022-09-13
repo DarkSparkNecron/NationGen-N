@@ -22,6 +22,7 @@ public class Site {
 	public int id = -1;
 	public String name = "UNNAMED";
 	public int level = 0;
+	public int IsPreviewSite = 0; //0 is regular site, 1 is for montag preview site. All !=0 sites will be futuresites and wount be given random name
 	
 	public List<String> writeLines()
 	{
