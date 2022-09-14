@@ -3,7 +3,7 @@
 #basechance 5
 #end
 
-
+--- ========================RESOURCE SITES
 #new
 #name "res75"
 #type resources
@@ -60,6 +60,7 @@
 #sitepath 3 10
 #end
 
+--- =================================== UNREST SITES
 #new
 #name "decunrest 5"
 #type unrest
@@ -84,6 +85,7 @@
 #sitepath 8 20
 #end
 
+--- ============================ SUMMONING SITES
 #new
 #name "void gate 20"
 #type voidgate
@@ -118,6 +120,11 @@
 #name "ghoul summoning"
 #type summon
 #command "#summon 198"
+#command "#summon 198"
+#command "#summon 198"
+#command "#summon 198"
+#command "#summon 198"
+#command "#summon 198"
 #sitepath 5 1000
 #basechance 0
 #chanceinc magic death 0.25
@@ -126,6 +133,11 @@
 #new
 #name "ghost summoning"
 #type summon
+#command "#summon 566"
+#command "#summon 566"
+#command "#summon 566"
+#command "#summon 566"
+#command "#summon 566"
 #command "#summon 566"
 #sitepath 5 1000
 #basechance 0
@@ -136,6 +148,11 @@
 #name "imp summoning"
 #type summon
 #command "#summon 303"
+#command "#summon 303"
+#command "#summon 303"
+#command "#summon 303"
+#command "#summon 303"
+#command "#summon 303"
 #sitepath 7 1000
 #basechance 0
 #chanceinc magic blood 0.25
@@ -145,11 +162,78 @@
 #name "wolf summoning"
 #type summon
 #command "#summon 284"
+#command "#summon 284"
+#command "#summon 284"
+#command "#summon 284"
+#command "#summon 284"
+#command "#summon 284"
 #sitepath 6 1000
 #basechance 0
 #chanceinc magic nature 0.25
 #end
 
+#new
+#name "small fire summoning"
+#type summon
+#command "#summon 597"
+#command "#summon 597"
+#command "#summon 597"
+#sitepath 0 1000
+#basechance 0
+#chanceinc magic fire 0.25
+#end
+
+#new
+#name "small water summoning"
+#type summon
+#command "#summon 411"
+#command "#summon 411"
+#command "#summon 411"
+#sitepath 2 1000
+#basechance 0
+#chanceinc magic water 0.25
+#end
+
+#new
+#name "small earth summoning"
+#type summon
+#command "#summon 496"
+#command "#summon 496"
+#command "#summon 496"
+#sitepath 3 1000
+#basechance 0
+#chanceinc magic earth 0.25
+#end
+
+#new
+#name "small air summoning"
+#type summon
+#command "#summon 570"
+#command "#summon 570"
+#command "#summon 570"
+#sitepath 1 1000
+#basechance 0
+#chanceinc magic air 0.25
+#end
+
+#new
+#name "small elemental summoning"
+#type summon
+#command "#summon 597"
+#command "#summon 411"
+#command "#summon 496"
+#command "#summon 570"
+#sitepath 0 40 ---fire
+#sitepath 1 40 ---air
+#sitepath 2 40 ---water
+#sitepath 3 40 ---earth
+#basechance 0
+#chanceinc magic fire 0.125
+#chanceinc magic air 0.125
+#chanceinc magic water 0.125
+#chanceinc magic earth 0.125
+#end
+--- ================================= SCRY&MAGIC AMPLIFYING
 #new
 #name "scry 1/6"
 #type scry
@@ -275,6 +359,7 @@
 #basechance 0.0625
 #end
 
+--- ============================== UNIT BUFF SITES
 #new
 #name "heal 1"
 #type heal
@@ -316,6 +401,7 @@
 #basechance 0.2
 #end
 
+--- ============================ DEFENSIVE SITES
 #new
 #name "holyfire 10"
 #type holyfire

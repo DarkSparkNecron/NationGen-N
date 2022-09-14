@@ -9,8 +9,8 @@ Code
 
 Content
 -----------------------------------------------------------
-
-
+- Wolf, ghost, ghoul, imp summoning sites made 6 times more powerful (summon 6 monsters instead of 1)
+- Added elemental summoning sites which summons 3 small elementals at a time, and one that summons 4 different small elementals
 
 =============================
 0.8.0-DEV1 (20th August 2022)
