@@ -1,5 +1,19 @@
 ﻿
-0.8.0-DEV (20th August 2022)
+0.8.0-DEV2 (14th of September 2022)
+----------------------------------------------------------
+Note: DEV test versions have separate log, showing changes from one test to other. Release will contain all the changes
+
+Code
+----------------------------------------------------------
+- Program now generates preview sites for every montag unit and commander
+
+Content
+-----------------------------------------------------------
+
+
+
+=============================
+0.8.0-DEV1 (20th August 2022)
 ----------------------------------------------------------
 Note: from this version its NatGen-N, however it includes some unreleased features. Should put N somewhere in the version number lol.
 

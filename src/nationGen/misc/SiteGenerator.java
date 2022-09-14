@@ -229,6 +229,7 @@ public class SiteGenerator {
 		//s.name = "PRVW: "+ Master.getName();
 		String montagValue = Master.getStringCommandValue("#firstshape", "");
 		s.name = montagValue; //this is to find Master unit at the naming stage and use its name
+		Master.tags.add("mptag", montagValue); //its a stupid way for finding Master unit in future (at this point montag is temp and will be redone before naming so we need to keep track of it. Montag Preview Tag)
 		if(IsCom == false)
 		{
 		 for(List<Unit> lu : n.unitlists.values()) //stolen from unit as idk how those things works
@@ -250,6 +251,15 @@ public class SiteGenerator {
 						s.coms.add(nu);
 				}
 			}
+			//for some reason montag units for commanders coulnt be found in comlists, or at least just lets check unitlist
+			for(List<Unit> lu : n.unitlists.values()) //stolen from unit as idk how those things works
+			 {
+				 for(Unit nu : lu)
+				 {
+					 if(nu.getStringCommandValue("#montag", "").equals(montagValue) && nu.tags.containsName("hasmontag")&& Master != nu)
+						s.coms.add(nu);
+				 }
+			 }
 		}	
 	    s.IsPreviewSite=1; //0 is regular site, 1 is for montag preview site
 	    s.level=0;

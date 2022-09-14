@@ -35,7 +35,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class NationGen
 {
 	public static String version = "0.8.0DEV";
-	public static String date = "13th of September 2022";
+	public static String date = "14th of September 2022";
 	
 	private List<NationRestriction> restrictions;
 	
@@ -332,9 +332,9 @@ public class NationGen
 				for(List<Unit> lu : n.unitlists.values())
 				{
 					for(Unit nu : lu)
-						if(nu.tags.containsName("montagunit") && mtg==nu.getStringCommandValue("#firstshape", ""))
+						if(nu.tags.containsName("montagunit") && nu.tags.contains("mptag", mtg))
 						{
-							s.name="PRVW: "+nu.getName();
+							s.name="PRVW: "+nu.getName()+", "+nu.getStringCommandValue("#firstshape", ""); //displaying montag to prevent sites overlapping
 							match=true;
 						}
 				}
@@ -342,15 +342,15 @@ public class NationGen
 					for(List<Unit> lu : n.comlists.values())
 					{
 						for(Unit nu : lu)
-							if(nu.tags.containsName("montagunit") && mtg==nu.getStringCommandValue("#firstshape", ""))
+							if(nu.tags.containsName("montagunit") && nu.tags.contains("mptag", mtg))
 							{
-								s.name="PRVW: "+nu.getName();
+								s.name="PRVW: "+nu.getName()+", "+nu.getStringCommandValue("#firstshape", "");
 								match=true;
 							}
 					}
 				if(match==false) //if still false then its an error
 				   {
-					System.out.print("Montag Preview site naming failed. Please report.");
+					System.out.println("Montag Preview site naming failed. Please report.");
 				   }
 			    }
 				//insert namings for other site categories here

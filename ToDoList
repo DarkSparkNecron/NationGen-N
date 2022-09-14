@@ -1,10 +1,13 @@
-ToDo List:
+ToDo List (for 0.8.0 release, future for future php):
 
 -------------------- Balance
 1)add ressize to crabs --Done. Added new primitive theme, possibility to get naked crabs, themes chance redone and nerf of baseprot (15->10), morale (13->9). Also ressize 4 for them
 2)make illhybrids RP cheaper --Done
 3)do something with taurs
 4)summoning sites are better (but mb not only them)
+future) do the same thing to nagas as to illhybrids
+future) fix atlantian flag bearers by making new role or just look at imperial humans for how it should be done
+future) also separate mutated crabs into different role
 
 -------------------- Code
 1)remove magic:acces button (or at least check what it do) --Done. problem was already fixed for 0.7.13
@@ -13,6 +16,6 @@ ToDo List:
 future)Extract color used for troops and put it somewhere in DM sebug section at least, or even use in scoregraphs
 
 -------------------- Mixed (Hardest)
-1)add PREVIEW sites for montag units (foulspawns)
+1)add PREVIEW sites for montag units (foulspawns) --Done
 2)sacred power slider now will do something --Done (thnks geepope)
 3)generate uwrec units for uwbuild nations.
