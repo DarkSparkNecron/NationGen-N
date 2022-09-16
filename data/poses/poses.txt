@@ -93,6 +93,7 @@
 
 ---- Atlantians
 #load atlantiantroops ./data/poses/atlantian/infantry.txt
+#load atlantianstandards ./data/poses/atlantian/frogwflags.txt
 #load atlantianmages ./data/poses/atlantian/mages.txt
 
 ---- Muuch

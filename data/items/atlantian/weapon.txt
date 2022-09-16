@@ -1,4 +1,10 @@
 #newitem
+#id hands
+#gameid -1
+#theme "primitive"
+#enditem
+
+#newitem
 #id coralspear
 #gameid 31
 #sprite /graphics/atlantian/weapon/coralspear.png

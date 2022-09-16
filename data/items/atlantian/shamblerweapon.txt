@@ -1,3 +1,10 @@
+#newitem ---this should be shamblers natiral attack, and for abyssal ones bite as well. btw should experiment later when reworking atlants
+#id Claws
+#gameid 29
+#define "#weapon 29"
+#theme "primitive"
+#enditem
+
 #newitem
 #id coralclub-s
 #gameid 45

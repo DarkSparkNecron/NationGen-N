@@ -14,6 +14,7 @@
 #nationcommand "#likespop 57"
 
 #pose atlantiantroops
+#pose atlantianstandards
 #pose atlantianmages
 
 #generationchance mounted 0.2
