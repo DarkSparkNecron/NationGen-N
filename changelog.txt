@@ -6,6 +6,7 @@ Note: DEV test versions have separate log, showing changes from one test to othe
 Code
 ----------------------------------------------------------
 - Program now generates preview sites for every montag unit and commander
+- Support for terrain recruitment. Via unit "specrec" tag and its args. (see some docs or commit descr)
 
 Content
 -----------------------------------------------------------

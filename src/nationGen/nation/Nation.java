@@ -1169,7 +1169,7 @@ public class Nation {
 		return lines;
 	}
 	
-
+	//writing lines for national recruitment into dm file
 	private List<String> writeRecLines(boolean coms, Map<String, List<Unit>> unitlists)
 	{
 		List<String> order = Generic.parseArgs("ranged infantry mounted chariot special sacred monsters");
@@ -1182,12 +1182,20 @@ public class Nation {
 		if(!coms)
 			line = "#addrecunit";
 		
-		List<String> foreigntags = new ArrayList<>();
+		String iscomm;
+		if(coms) iscomm="com";
+		else iscomm="rec";
+		
+		//as coastfort recruitment has limited slots or at least slot numbers
+		int coastcoms = 0;
+		int coasttroops = 0;
+		
+		/*List<String> foreigntags = new ArrayList<>();
 		foreigntags.add("forestrec");
 		foreigntags.add("mountainrec");
 		foreigntags.add("swamprec");
 		foreigntags.add("wasterec");
-		foreigntags.add("caverec");
+		foreigntags.add("caverec"); */
 		
 		List<String> lines = new ArrayList<>();
 
@@ -1198,9 +1206,10 @@ public class Nation {
 			{
 				if(listnames.contains(str + "-" + i))
 				{
+					//terrain recruitment
 					for(Unit u : unitlists.get(str + "-" + i))
 					{
-						for(String tag : foreigntags)
+						/*for(String tag : foreigntags)
 							if(u.tags.containsName(tag))
 							{
 								if(coms)
@@ -1209,9 +1218,48 @@ public class Nation {
 								}
 								else
 									lines.add("#" + tag + " " + u.id);
-							}
+							} */
 						
-						if(!u.caponly)
+						
+						//iscomm, coastcoms, coasttroops was here
+						
+						if(u.tags.containsName("specrec"))
+						{
+							//recruitable in province of type, fort not needed
+							if(u.tags.contains("specrec", "forest"))
+								lines.add("#forest" + iscomm + " " + u.id);
+							if(u.tags.contains("specrec", "mountain"))
+								lines.add("#mountain" + iscomm + " " + u.id);
+							if(u.tags.contains("specrec", "swamp"))
+								lines.add("#swamp" + iscomm + " " + u.id);
+							if(u.tags.contains("specrec", "waste"))
+								lines.add("#waste" + iscomm + " " + u.id);
+							if(u.tags.contains("specrec", "coast"))
+								lines.add("#coast" + iscomm + " " + u.id);
+							//recruitable in province of type, but for needed
+							if(u.tags.contains("specrec", "uw"))
+								lines.add("#uw" + iscomm + " " + u.id);
+							if(u.tags.contains("specrec", "land")) //landrec for uwnations
+								lines.add("#land" + iscomm + " " + u.id);
+							if(u.tags.contains("specrec", "coastfort"))
+							{
+								if(coms)
+								{
+									coastcoms++;
+									lines.add("#coastcom" + coastcoms + " " + u.id);
+									if(coastcoms>2)System.out.println("Error. To many coastfort commanders. ("+coastcoms+")");
+								}else
+								{
+									coasttroops++;
+									lines.add("#coastunit" + coasttroops + " " + u.id);
+									if(coasttroops>3)System.out.println("Error. To many coastfort troops. ("+coasttroops+")");
+								}
+								
+							}
+							if(u.tags.contains("specrec", "alsocommon"))
+									lines.add(line + " " + u.id);
+						}else
+						  if(!u.caponly)
 							lines.add(line + " " + u.id);
 					}
 					
@@ -1224,15 +1272,52 @@ public class Nation {
 				if(listname.startsWith(str))
 					for(Unit u : unitlists.get(listname))
 					{
-						for(String tag : foreigntags)
+						/*for(String tag : foreigntags)
 							if(u.tags.containsName(tag))
 							{
 								if(coms)
 									lines.add("#" + tag.substring(0, tag.length() - 3) + "com " + u.id);
 								else
 									lines.add("#" + tag+ " " + u.id);
-							}
+							}*/
 						
+						if(u.tags.containsName("specrec"))
+						{
+							//recruitable in province of type, fort not needed
+							if(u.tags.contains("specrec", "forest"))
+								lines.add("#forest" + iscomm + " " + u.id);
+							if(u.tags.contains("specrec", "mountain"))
+								lines.add("#mountain" + iscomm + " " + u.id);
+							if(u.tags.contains("specrec", "swamp"))
+								lines.add("#swamp" + iscomm + " " + u.id);
+							if(u.tags.contains("specrec", "waste"))
+								lines.add("#waste" + iscomm + " " + u.id);
+							if(u.tags.contains("specrec", "coast"))
+								lines.add("#coast" + iscomm + " " + u.id);
+							//recruitable in province of type, but for needed
+							if(u.tags.contains("specrec", "uw"))
+								lines.add("#uw" + iscomm + " " + u.id);
+							if(u.tags.contains("specrec", "land")) //landrec for uwnations
+								lines.add("#land" + iscomm + " " + u.id);
+							if(u.tags.contains("specrec", "coastfort"))
+							{
+								if(coms)
+								{
+									coastcoms++;
+									lines.add("#coastcom" + coastcoms + " " + u.id);
+									if(coastcoms>2)System.out.println("Error. To many coastfort commanders. ("+coastcoms+")");
+								}else
+								{
+									coasttroops++;
+									lines.add("#coastunit" + coasttroops + " " + u.id);
+									if(coasttroops>3)System.out.println("Error. To many coastfort troops. ("+coasttroops+")");
+								}
+								
+							}
+							if(u.tags.contains("specrec", "alsocommon"))
+								lines.add(line + " " + u.id);
+
+						}else
 						if(!u.caponly)
 							lines.add(line + " " + u.id);
 					}

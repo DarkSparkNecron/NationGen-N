@@ -266,7 +266,7 @@ public class UnitGen {
 		}
 		
 
-
+		//Helmet
 		if(u.isSlotEmpty("helmet") && u.pose.getItems("helmet") != null)
 		{
 			if(!ignoreArmor)
@@ -340,7 +340,7 @@ public class UnitGen {
 		}
 		
 
-		
+		//offhands
 		if(u.isSlotEmpty("offhand") && u.pose.getItems("offhand") != null)
 		{
 			if(ignoreArmor)
