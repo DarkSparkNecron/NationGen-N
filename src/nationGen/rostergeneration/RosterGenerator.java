@@ -163,11 +163,21 @@ public class RosterGenerator {
 		maxamounts.put("mounted", 4);
 		// Random chariot maximum
 		maxamounts.put("chariot", r.nextInt(3));
+		maxamounts.put("uwcolonyunits", r.nextInt(5));
 		
-
+		Boolean genuwcolony=false;
+		
 		int cycles = 0;
 		int incs = 1;
 		
+		//if(primary.nationcommands.contains("#uwbuild 1"))
+		//	genuwcolony=true;
+		
+		//so this lazy cringe is working now. if primary race knows how to build forts it will get uwrec from secondary race
+		for(Command c : primary.nationcommands)
+		if(c.command.equals("#uwbuild"))
+			genuwcolony=true;
+			
 		while(units < max)
 		{
 
@@ -232,7 +242,7 @@ public class RosterGenerator {
 			amounts.put("infantry", infantry.size());
 			amounts.put("mounted", cavalry.size());
 			amounts.put("chariot", chariot.size());
-			
+			amounts.put("uwcolonyunits", 0);
 
 			String roll = null;
 			int rolls = 0;
@@ -269,6 +279,27 @@ public class RosterGenerator {
 				TroopTemplate t = this.chooseTemplate(race, roll);
 				Unit u = tgen.generateUnit(t);
 				
+				//System.out.print(genuwcolony);
+				//System.out.print(race==secondary);
+				//System.out.print(amounts.get("uwcolonyunits"));
+				//System.out.println(maxamounts.get("uwcolonyunits"));
+				if(genuwcolony==true && race==secondary && amounts.get("uwcolonyunits")<maxamounts.get("uwcolonyunits"))
+				{
+					//another way to say that im stupid is this check for secondary/curr unit is capable of uw
+					Boolean GoMyBoy=false;
+					for(Command tut : u.pose.commands)
+						if(tut.command.equals("#amphibian"))GoMyBoy=true;else
+							if(tut.command.equals("#pooramphibian"))GoMyBoy=true;
+					//for(Command tut : race.commands)
+					//	if(tut.command.equals("#amphibian"))GoMyBoy=true;else
+					//		if(tut.command.equals("#pooramphibian"))GoMyBoy=true;
+					if(GoMyBoy)
+					{
+					u.tags.add("specrec","uw");
+					amounts.replace("uwcolonyunits", amounts.get("uwcolonyunits")+1);
+					}
+				}
+				
 				if(u != null)
 				{
 					target.add(u);
@@ -281,7 +312,7 @@ public class RosterGenerator {
 						secs++;
 
 				}
-
+				
 				
 			}
 
