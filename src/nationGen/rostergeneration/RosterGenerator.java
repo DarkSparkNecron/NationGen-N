@@ -924,4 +924,66 @@ public class RosterGenerator {
 	{
 		return u.getSlot("basesprite").tags.getInt("basespritepriority").orElse(5);
 	}
+	
+	/**
+	 * Returns uwcolony tag for a nation, depending on races and max amount of units for each race. by default returns "none", which means no colony
+	 * @param primary - primary race of nation
+	 * @param secondary - secondary race of nation
+	 * @param primUnitMaxAmount - max amount of primary race units (see rostergen)
+	 * @param secUnitMaxAmount - max amount of secondary race units (see rostergen)
+	 * @param chance - from 0.00 to 1.00, made by random, to determine types
+	 * @return
+	 */
+	private String getUWColonyType(Race primary, Race secondary, int primUnitMaxAmount, int secUnitMaxAmount, double chance)
+	{
+		String Res = "none";
+		
+		Boolean primCanBuild = false;
+		Boolean secCanBuild = false;
+		
+		//checking which races can build forts
+		for(Command c : primary.nationcommands)
+			if(c.command.equals("#uwbuild"))
+				primCanBuild=true;
+		for(Command c : primary.nationcommands)
+			if(c.command.equals("#uwbuild"))
+				secCanBuild=true;
+		
+		Boolean primCanUw = false;
+		Boolean secCanUw = false;
+		
+		if(primCanBuild||secCanBuild)
+		{
+			//checking primary race for being capable uw
+			for(Command c : primary.specialcommands)
+				if(c.command=="#amphibian" || c.command=="#pooramphibian")
+					primCanUw=true;
+			if(!primCanUw)
+				for(Pose p : primary.poses)
+					for(Command c : p.commands)
+					 if(c.command=="#amphibian" || c.command=="#pooramphibian")
+						 primCanUw=true;
+			//checking secondary race for being capable uw
+			for(Command c : secondary.specialcommands)
+				if(c.command=="#amphibian" || c.command=="#pooramphibian")
+					secCanUw=true;
+			if(!primCanUw)
+				for(Pose p : secondary.poses)
+					for(Command c : p.commands)
+					 if(c.command=="#amphibian" || c.command=="#pooramphibian")
+						 secCanUw=true;
+			
+			//if(secCanBuild&&secCanUw)Res="secrace";
+			if(primCanBuild&&secCanUw||secCanBuild&&secCanUw)Res="secrace";
+			if(primCanBuild&&primCanUw)Res="primrace";
+			if(primCanBuild&&primCanUw&&secCanUw)Res="mixrace"; //all times big (have priest&mage)
+			if(Res=="mixrace"&&chance<=0.33)Res="secrace";
+			if(Res=="mixrace"&&chance<=0.66&&chance>0.33)Res="primrace";
+			if(chance>0.15&&chance<0.48&&(Res=="primrace"||Res=="secrace"))Res+="big"; //~50% chance for turned mixed, and 33% for reqular
+			
+		}
+		
+			
+		return Res;
+	}
 }
