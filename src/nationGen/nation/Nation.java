@@ -202,7 +202,10 @@ public class Nation {
 	{
 		// Troops
 		RosterGenerator g = new RosterGenerator(nationGen, this, assets);
-		g.execute();
+		g.setup(g.GetClassicMaxamounts());
+		//put colonial troop affecting and type determining here
+		g.executeGen(null);
+		//no need to reset now
 		g = null;
 		System.gc();
 		

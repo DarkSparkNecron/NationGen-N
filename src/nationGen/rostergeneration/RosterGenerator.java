@@ -30,7 +30,24 @@ public class RosterGenerator {
 	private ChanceIncHandler chandler;
 	private final double skipchance;
 	private List<TroopTemplate> templates = new ArrayList<>();
+	
+	//new fields for generation purposes
+	private Race primary;
+	private Race secondary;
 
+	private int max; //max amount of units for nation
+	private int units; //current units amount
+	private int secs; //current amount of secondary race units
+	private int prims; //current amount of primary race units
+	
+	//Important thing, it includes maximum amounts of units of each type in roster
+	private Map<String, Integer> maxamounts;
+	
+	private double secaffinity;
+	
+	private int maxprimaries; //max amount of primary race units
+	private double secamount; //max amount of secondary race units
+	
 	public RosterGenerator(NationGen g, Nation n, NationGenAssets assets)
 	{
 		nationGen = g;
@@ -53,21 +70,21 @@ public class RosterGenerator {
 		return getPosesWithoutMaxUnits(race.getPoses(role), race).size() > 0;
 	}
 	
-	public void execute()
+	public void setup(Map<String, Integer> newMaxamounts)
 	{
 
 	
 		
-		Race primary = nation.races.get(0);
-		Race secondary = nation.races.get(1);
+		primary = nation.races.get(0);
+		secondary = nation.races.get(1);
 		
 		int maxtroops = primary.tags.getInt("maxtroops").orElse(10);
 		int mintroops = primary.tags.getInt("mintroops").orElse(6);
 
-		int max = mintroops + r.nextInt(maxtroops - mintroops + 1); // 6-10 by default
-		int units = 0;
-		int secs = 0;
-		int prims = 0;
+		max = mintroops + r.nextInt(maxtroops - mintroops + 1); // 6-10 by default
+		units = 0;
+		secs = 0;
+		prims = 0;
 		
 
 		
@@ -81,7 +98,7 @@ public class RosterGenerator {
 
 		
 		// Affinity
-		double secaffinity = r.nextDouble() * bonussecchance;	
+		secaffinity = r.nextDouble() * bonussecchance;	
 
 
 		double nosecaffinitychance = primary.tags.getDouble("nosecaffinitychance").orElse(0.35);
@@ -101,7 +118,7 @@ public class RosterGenerator {
 		
 		
 		
-		int maxprimaries = 100;
+		maxprimaries = 100;
 		
 		// Primary amounts
 		if(primary.tags.containsName("maxprimaryracetroopshare"))
@@ -115,7 +132,7 @@ public class RosterGenerator {
 
 		
 		// Secondary amount
-		double secamount = max * 0.3;
+		secamount = max * 0.3;
 		if(r.nextDouble() < bonussecchance)
 		{
 			secamount+= max * 0.2;
@@ -154,8 +171,13 @@ public class RosterGenerator {
 			max = Math.min(max, maxprimaries);
 		else
 			max = (int) Math.min(max, maxprimaries + secamount);
+		
+		maxamounts = newMaxamounts;
+	}
 	
-
+	//like in old classic, typical maxamounts for default natgen nations
+	public Map<String, Integer> GetClassicMaxamounts()
+	{
 		Map<String, Integer> maxamounts = new HashMap<>();
 		// 1-2 ranged maximum
 		maxamounts.put("ranged", 1 + r.nextInt(2)); // 1-2
@@ -163,20 +185,47 @@ public class RosterGenerator {
 		maxamounts.put("mounted", 4);
 		// Random chariot maximum
 		maxamounts.put("chariot", r.nextInt(3));
-		maxamounts.put("uwcolonyunits", r.nextInt(5));
+		return maxamounts;
+	}
+	
+	//for creating Map easier by just inputting int values into it
+	public Map<String, Integer> GenerateMaxamounts(int maxRanged, int maxInfantry, int maxMounted, int maxChariot)
+	{
+		Map<String, Integer> maxamounts = new HashMap<>();
+		maxamounts.put("ranged", maxRanged);
+		maxamounts.put("infantry", maxInfantry);
+		maxamounts.put("mounted", maxMounted);
+		maxamounts.put("chariot", maxChariot);
+		return maxamounts;
+	}
+	
+	//to reset everything as this fields were local to execute method and deconstructed after its comlition
+	public void nullifySetup()
+	{
+		primary=null;
+		secondary=null;
+
+		max=0;
+		units=0;
+		secs=0;
+		prims=0;
 		
-		Boolean genuwcolony=false;
+		maxamounts=null;
+		
+		secaffinity=0;
+		
+		maxprimaries=0;
+		secamount=0;
+	}
+	
+	//specrecData should include only one tag ("specrec"), with args. U know which one
+	public void executeGen(Tags specrecData)
+	{
+			
 		
 		int cycles = 0;
 		int incs = 1;
 		
-		//if(primary.nationcommands.contains("#uwbuild 1"))
-		//	genuwcolony=true;
-		
-		//so this lazy cringe is working now. if primary race knows how to build forts it will get uwrec from secondary race
-		for(Command c : primary.nationcommands)
-		if(c.command.equals("#uwbuild"))
-			genuwcolony=true;
 			
 		while(units < max)
 		{
@@ -242,7 +291,6 @@ public class RosterGenerator {
 			amounts.put("infantry", infantry.size());
 			amounts.put("mounted", cavalry.size());
 			amounts.put("chariot", chariot.size());
-			amounts.put("uwcolonyunits", 0);
 
 			String roll = null;
 			int rolls = 0;
@@ -279,26 +327,12 @@ public class RosterGenerator {
 				TroopTemplate t = this.chooseTemplate(race, roll);
 				Unit u = tgen.generateUnit(t);
 				
-				//System.out.print(genuwcolony);
-				//System.out.print(race==secondary);
-				//System.out.print(amounts.get("uwcolonyunits"));
-				//System.out.println(maxamounts.get("uwcolonyunits"));
-				if(genuwcolony==true && race==secondary && amounts.get("uwcolonyunits")<maxamounts.get("uwcolonyunits"))
+				//for terrainrec
+				if(specrecData!=null)
 				{
-					//another way to say that im stupid is this check for secondary/curr unit is capable of uw
-					Boolean GoMyBoy=false;
-					for(Command tut : u.pose.commands)
-						if(tut.command.equals("#amphibian"))GoMyBoy=true;else
-							if(tut.command.equals("#pooramphibian"))GoMyBoy=true;
-					//for(Command tut : race.commands)
-					//	if(tut.command.equals("#amphibian"))GoMyBoy=true;else
-					//		if(tut.command.equals("#pooramphibian"))GoMyBoy=true;
-					if(GoMyBoy)
-					{
-					u.tags.add("specrec","uw");
-					amounts.replace("uwcolonyunits", amounts.get("uwcolonyunits")+1);
-					}
+					u.tags.addAll(specrecData);
 				}
+				
 				
 				if(u != null)
 				{
