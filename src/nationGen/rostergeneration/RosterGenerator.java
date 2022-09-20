@@ -327,7 +327,7 @@ public class RosterGenerator {
 				TroopTemplate t = this.chooseTemplate(race, roll);
 				Unit u = tgen.generateUnit(t);
 				
-				//for terrainrec
+				//for terrainrec, actually this can lead to bugs where non-uw troops are uw if race is wrong or mount is land-based
 				if(specrecData!=null)
 				{
 					u.tags.addAll(specrecData);
@@ -387,6 +387,30 @@ public class RosterGenerator {
 	
 	}
 	
+	public int GetMaxUnits()
+	{
+		return max;
+	}
+	public int GetMaxPrimaryUnits()
+	{
+		return maxprimaries;
+	}
+	public double GetMaxSecondaryUnits()
+	{
+		return secamount;
+	}
+	public void AddToMaxes(int addMax, int addMaxPrimary, int addMaxSecondary)
+	{
+		max+=addMax;
+		maxprimaries+=addMaxPrimary;
+		secamount+=addMaxSecondary;
+	}
+	public void MultToMaxes(double multMax, double multMaxPrimary, double multMaxSecondary)
+	{
+		max=(int)Math.round(max*multMax);
+		maxprimaries=(int)Math.round(maxprimaries*multMaxPrimary);
+		secamount=Math.round(secamount*multMaxSecondary);
+	}	
 	
 	/**
 	 * Chooses whether to generate an unit from existing template or generates a new template
