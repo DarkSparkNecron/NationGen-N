@@ -112,6 +112,7 @@ public class ColonyGenerator {
 	    secondmax=secmaxu;
 	}
 	
+	//changes max, primmax and secondmax to affect generation of the main nation roster
 	public void setMaxes(RosterGenerator ro)
 	{
 		max=ro.GetMaxUnits();
@@ -134,18 +135,69 @@ public class ColonyGenerator {
 			//if secrace has <=25% it steals all secrace units
 			//big colony can steal up to 50% of units if both races are amph or its just primerace and no secrace
 			//reqular colony steals 25%-33%
+			Boolean SecLowPop = true;
+			if(secondmax/max>0.25)SecLowPop=false;
+			/*if(SecLowPop)
+			{
+				secsteal=secondmax;
+				secondmax=0;
+			}*/
+			
+			double StealCoef;
+			double StealMod = 1;
+			
+			if(BigModifier)StealCoef=0.33; else StealCoef=0.2;
+			
 			if(SubType=="primrace")
 			{
 				//steal 1\3 if big, or even 50% for non mixed.
 				//steal 1\4-1\5 if not big.
+			   primsteal=Math.round(primmax*StealCoef*StealMod);
+			   primmax-=primsteal;
 			}
 				else if(SubType=="secrace")
 				{
-					
+					if(SecLowPop)StealCoef=1;
+					secsteal=Math.round(secondmax*StealCoef*StealMod);
+					secondmax-=secsteal;
 				}else if(SubType=="mixrace")
 				{
-					
+					StealMod=0.5; //because we stealing units from both places, colony is twice as big, which is should not be
+					primsteal=Math.round(primmax*StealCoef*StealMod);
+					if(SecLowPop)
+						{StealCoef=1; StealMod=1;}
+					secsteal=Math.round(secondmax*StealCoef*StealMod);
+					primmax-=primsteal;
+					secondmax-=secsteal;
 				}else System.out.println("colonySubType error! its unreadable");
 		}
+		totalsteal=primsteal+secsteal;
+		max-=totalsteal;
 	}
+	
+	public int ReturnNewMax()
+	{
+		return max;
+	}
+	public int ReturnNewPrimMax()
+	{
+		return primmax;
+	}
+	public double ReturnNewSecMax()
+	{
+		return secondmax;
+	}
+	
+	private Map<String, Integer> GetUwMaxamounts()
+	{
+		Map<String, Integer> maxamounts = new HashMap<>();
+		// 0-2 ranged maximum
+		maxamounts.put("ranged",r.nextInt(2)); // 0-2
+		maxamounts.put("infantry", 6);
+		//no mounted as currenty is a lack if uw mounts
+		maxamounts.put("mounted", 0);
+		maxamounts.put("chariot", 0);
+		return maxamounts;
+	}
+	
 }
