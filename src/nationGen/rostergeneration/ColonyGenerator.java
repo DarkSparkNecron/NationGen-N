@@ -67,22 +67,53 @@ public class ColonyGenerator {
 		if(primCanBuild||secCanBuild)
 		{
 			//checking primary race for being capable uw
+			//for some god damn reason c.command=="#amphibian" didnt worked
 			for(Command c : primary.specialcommands)
-				if(c.command=="#amphibian" || c.command=="#pooramphibian")
+			{
+				//System.out.println("sc:"+c.command);
+				if(c.command.equals("#amphibian") || c.command.equals("#pooramphibian"))
 					primCanUw=true;
+			}
+			if(!primCanUw)
+			for(Command c : primary.unitcommands)
+			{
+				//System.out.println("uc:"+c.command);
+				if(c.command.equals("#amphibian") || c.command.equals("#pooramphibian"))
+					primCanUw=true;
+			}
+			if(!primCanUw)
+			for(Command c : primary.nationcommands)
+			{
+				//System.out.println("nc:"+c.command);
+				if(c.command.equals("#amphibian") || c.command.equals("#pooramphibian"))
+					primCanUw=true;
+			}
 			if(!primCanUw)
 				for(Pose p : primary.poses)
 					for(Command c : p.commands)
-					 if(c.command=="#amphibian" || c.command=="#pooramphibian")
-						 primCanUw=true;
+					{
+						//System.out.println("pc:"+c.command+"."+c.command.equals("#amphibian"));
+						if(c.command.equals("#amphibian") || c.command.equals("#pooramphibian"))
+						{
+							primCanUw=true;
+						}
+					}
 			//checking secondary race for being capable uw
 			for(Command c : secondary.specialcommands)
-				if(c.command=="#amphibian" || c.command=="#pooramphibian")
+				if(c.command.equals("#amphibian") || c.command.equals("#pooramphibian"))
 					secCanUw=true;
-			if(!primCanUw)
+			if(!secCanUw)
+			for(Command c : secondary.unitcommands)
+				if(c.command.equals("#amphibian") || c.command.equals("#pooramphibian"))
+					secCanUw=true;
+			if(!secCanUw)
+			for(Command c : secondary.nationcommands)
+				if(c.command.equals("#amphibian") || c.command.equals("#pooramphibian"))
+					secCanUw=true;
+			if(!secCanUw)
 				for(Pose p : secondary.poses)
 					for(Command c : p.commands)
-					 if(c.command=="#amphibian" || c.command=="#pooramphibian")
+					 if(c.command.equals("#amphibian") || c.command.equals("#pooramphibian"))
 						 secCanUw=true;
 			
 			//if(secCanBuild&&secCanUw)Res="secrace";
@@ -93,7 +124,7 @@ public class ColonyGenerator {
 			if(Res=="mixrace"&&chance<=0.66&&chance>0.33)Res="primrace";
 			if(chance>0.15&&chance<0.48&&(Res=="primrace"||Res=="secrace"))Res+=":big"; //~50% chance for turned mixed, and 33% for reqular
 		//bebug
-		System.out.println("uwcolony type is: "+Res);
+		System.out.println("uwcolony type is: "+Res+", primcanuw="+primCanUw+", seccanuw="+secCanUw);
 		}
 		
 			
@@ -144,16 +175,21 @@ public class ColonyGenerator {
 				secondmax=0;
 			}*/
 			
-			double StealCoef;
+			double StealCoef=0;
 			double StealMod = 1;
 			
 			if(BigModifier)StealCoef=0.33; else StealCoef=0.2;
+			//this is because for some reason this values for some times are extremely big and generation is certainly limited by max due to values being bigger than it
+			//without it after stealing max will be negative
+			if(primmax>=max)primmax=max;
+			if(secondmax>=max)secondmax=max;
 			
 			if(SubType=="primrace")
 			{
 				//steal 1\3 if big, or even 50% for non mixed.
 				//steal 1\4-1\5 if not big.
 			   primsteal=Math.round(primmax*StealCoef*StealMod);
+			   System.out.println(primsteal+"="+primmax*StealCoef*StealMod+"("+primmax+","+StealCoef+","+StealMod+")");
 			   primmax-=primsteal;
 			}
 				else if(SubType=="secrace")
