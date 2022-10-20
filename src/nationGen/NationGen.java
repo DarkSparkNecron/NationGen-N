@@ -35,7 +35,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class NationGen
 {
 	public static String version = "0.8.0-DEV2";
-	public static String date = "20th of September 2022";
+	public static String date = "20th of October 2022";
 	
 	private List<NationRestriction> restrictions;
 	

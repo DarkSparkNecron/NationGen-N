@@ -26,7 +26,7 @@ public class ColonyGenerator {
 	private Race secondary;
 	private String colonyType = "uwcolony"; //non-functional now
 	private String colonySubType;
-	private Tags specrecInfo; //contains tags for specrec
+	public Tags specrecInfo; //contains tags for specrec
 	//unit amounts
 	private int max; //max amount of units for nation
 	private int primmax;
@@ -45,7 +45,7 @@ public class ColonyGenerator {
 	}
 	
 
-	private void getUWColonyType(Race primary, Race secondary)
+	public void getUWColonyType(Race primary, Race secondary)
 	{
 		String Res = "none";
 		double chance = r.nextDouble(1);
@@ -92,7 +92,8 @@ public class ColonyGenerator {
 			if(Res=="mixrace"&&chance<=0.33)Res="secrace";
 			if(Res=="mixrace"&&chance<=0.66&&chance>0.33)Res="primrace";
 			if(chance>0.15&&chance<0.48&&(Res=="primrace"||Res=="secrace"))Res+=":big"; //~50% chance for turned mixed, and 33% for reqular
-			
+		//bebug
+		System.out.println("uwcolony type is: "+Res);
 		}
 		
 			
@@ -115,9 +116,9 @@ public class ColonyGenerator {
 	//changes max, primmax and secondmax to affect generation of the main nation roster
 	public void setMaxes(RosterGenerator ro)
 	{
-		max=ro.GetMaxUnits();
-		primmax=ro.GetMaxPrimaryUnits();
-		secondmax=ro.GetMaxSecondaryUnits();
+		max=ro.getMaxUnits();
+		primmax=ro.getMaxPrimaryUnits();
+		secondmax=ro.getMaxSecondaryUnits();
 		
 		String SubType;
 		Boolean BigModifier=false;
@@ -130,7 +131,7 @@ public class ColonyGenerator {
 		int l=colonySubType.length();
 		SubType=colonySubType.split(":")[0];
 		
-		if(colonyType=="uwcolony")
+		if(colonyType=="uwcolony"&&colonySubType!="none")
 		{
 			//if secrace has <=25% it steals all secrace units
 			//big colony can steal up to 50% of units if both races are amph or its just primerace and no secrace
@@ -169,26 +170,29 @@ public class ColonyGenerator {
 					secsteal=Math.round(secondmax*StealCoef*StealMod);
 					primmax-=primsteal;
 					secondmax-=secsteal;
-				}else System.out.println("colonySubType error! its unreadable");
+				}else System.out.println("colonySubType error! its unreadable: "+colonySubType+" | "+SubType);
 		}
 		totalsteal=primsteal+secsteal;
 		max-=totalsteal;
+		//bebug
+		System.out.println("Steal calk: "+colonySubType+", max "+max+","+", primmax "+primmax+", secmax "+secondmax);
+		System.out.println("primasteal: "+primsteal+", secsteal: "+secsteal+", total: "+totalsteal);
 	}
 	
-	public int ReturnNewMax()
+	public int returnNewMax()
 	{
 		return max;
 	}
-	public int ReturnNewPrimMax()
+	public int returnNewPrimMax()
 	{
 		return primmax;
 	}
-	public double ReturnNewSecMax()
+	public double returnNewSecMax()
 	{
 		return secondmax;
 	}
 	
-	private Map<String, Integer> GetUwMaxamounts()
+	public Map<String, Integer> getUwMaxamounts()
 	{
 		Map<String, Integer> maxamounts = new HashMap<>();
 		// 0-2 ranged maximum

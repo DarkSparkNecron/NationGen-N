@@ -44,6 +44,7 @@ public class Nation {
 	
 	public NationGen nationGen;
 	private NationGenAssets assets;
+	public ColonyGenerator colGen; //its used multiple times across different methods, but have same setup
 	
 	private final long seed;
 	public final Random random;
@@ -89,6 +90,7 @@ public class Nation {
 		comlists.put("priests", new ArrayList<>());
 		comlists.put("mages", new ArrayList<>());
 		
+		this.colGen = new ColonyGenerator(ngen,this,assets);
 		generate(restrictions);
 	}
 	
@@ -186,7 +188,7 @@ public class Nation {
 		{
 			races.get(1).addCommand(command);
 		}
-
+		colGen.getUWColonyType(races.get(0), races.get(1));
 	}
 	
 	
@@ -204,8 +206,24 @@ public class Nation {
 		RosterGenerator g = new RosterGenerator(nationGen, this, assets);
 		g.setup(g.GetClassicMaxamounts());
 		//put colonial troop affecting and type determining here
+		colGen.setMaxes(g);
+		if(colGen.returnNewMax()!=g.getMaxUnits())
+		{
+		//this 3 deltas is how many units could go to colony
+		int dMax=g.getMaxUnits()-colGen.returnNewMax();
+		int dPMax=g.getMaxPrimaryUnits()-colGen.returnNewPrimMax();
+		double dSMax=(g.getMaxSecondaryUnits()-colGen.returnNewSecMax());
+	
+		g.addToMaxes(-1* colGen.returnNewMax(), -1*colGen.returnNewPrimMax(), -1*(int)colGen.returnNewSecMax()); //should use Math.round? 
 		g.executeGen(null);
-		//no need to reset now
+		
+		//g.setup(colGen.getUwMaxamounts());
+		g.setMaxamounts(colGen.getUwMaxamounts());
+		g.setMaxes(dMax, dPMax, dSMax);
+		g.executeGen(colGen.specrecInfo);
+		//bebug
+		System.out.println("colgen");
+		}else g.executeGen(null);
 		g = null;
 		System.gc();
 		

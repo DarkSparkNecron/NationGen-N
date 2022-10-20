@@ -218,6 +218,11 @@ public class RosterGenerator {
 		secamount=0;
 	}
 	
+	public void setMaxamounts(Map<String, Integer> newMaxamounts)
+	{
+		maxamounts=newMaxamounts;
+	}
+	
 	//specrecData should include only one tag ("specrec"), with args. U know which one
 	public void executeGen(Tags specrecData)
 	{
@@ -387,30 +392,36 @@ public class RosterGenerator {
 	
 	}
 	
-	public int GetMaxUnits()
+	public int getMaxUnits()
 	{
 		return max;
 	}
-	public int GetMaxPrimaryUnits()
+	public int getMaxPrimaryUnits()
 	{
 		return maxprimaries;
 	}
-	public double GetMaxSecondaryUnits()
+	public double getMaxSecondaryUnits()
 	{
 		return secamount;
 	}
-	public void AddToMaxes(int addMax, int addMaxPrimary, int addMaxSecondary)
+	public void addToMaxes(int addMax, int addMaxPrimary, int addMaxSecondary)
 	{
 		max+=addMax;
 		maxprimaries+=addMaxPrimary;
 		secamount+=addMaxSecondary;
 	}
-	public void MultToMaxes(double multMax, double multMaxPrimary, double multMaxSecondary)
+	public void multToMaxes(double multMax, double multMaxPrimary, double multMaxSecondary)
 	{
 		max=(int)Math.round(max*multMax);
 		maxprimaries=(int)Math.round(maxprimaries*multMaxPrimary);
 		secamount=Math.round(secamount*multMaxSecondary);
-	}	
+	}
+	public void setMaxes(int newMax, int newMaxPrimary, double newMaxSecondary)
+	{
+		max=newMax;
+		maxprimaries=newMaxPrimary;
+		secamount=newMaxSecondary;
+	}
 	
 	/**
 	 * Chooses whether to generate an unit from existing template or generates a new template
