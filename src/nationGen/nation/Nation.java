@@ -223,7 +223,9 @@ public class Nation {
 		g.executeGen(colGen.specrecInfo);
 		//bebug
 		System.out.println("colgen");
-		}else g.executeGen(null);
+		}
+		else g.executeGen(null);
+		
 		g = null;
 		System.gc();
 		

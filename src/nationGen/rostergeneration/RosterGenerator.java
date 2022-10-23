@@ -336,6 +336,7 @@ public class RosterGenerator {
 				if(specrecData!=null)
 				{
 					u.tags.addAll(specrecData);
+					System.out.println("adding specrec tags");
 				}
 				
 				

@@ -40,7 +40,8 @@ public class ColonyGenerator {
 		nationGen = g;
 		nation = n;
 		this.r = new Random(n.random.nextInt());
-		
+		this.specrecInfo = new Tags();
+		setSpecrecTag();
 		
 	}
 	
@@ -134,7 +135,8 @@ public class ColonyGenerator {
 	
 	private void setSpecrecTag()
 	{
-	  if(colonyType=="uwcolony") specrecInfo.add("specrec", "uw");
+	  if(colonyType=="uwcolony")
+		  specrecInfo.add("specrec", "uw");
 	}
 	
 	public void recieveMaxes(int maxu, int primmaxu, double secmaxu)
