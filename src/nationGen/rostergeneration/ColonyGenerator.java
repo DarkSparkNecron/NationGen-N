@@ -24,7 +24,7 @@ public class ColonyGenerator {
 	//national&colonial info
 	private Race primary;
 	private Race secondary;
-	private String colonyType = "uwcolony"; //non-functional now
+	private String colonyType;
 	private String colonySubType;
 	public Tags specrecInfo; //contains tags for specrec
 	//unit amounts
@@ -35,11 +35,12 @@ public class ColonyGenerator {
 	Map<String, Integer> amounts = new HashMap<>();
 	
 	
-	public ColonyGenerator(NationGen g, Nation n, NationGenAssets assets)
+	public ColonyGenerator(NationGen g, Nation n, NationGenAssets assets, String colType)
 	{
 		nationGen = g;
 		nation = n;
 		this.r = new Random(n.random.nextInt());
+		colonyType=colType;
 		this.specrecInfo = new Tags();
 		setSpecrecTag();
 		
@@ -58,7 +59,7 @@ public class ColonyGenerator {
 		for(Command c : primary.nationcommands)
 			if(c.command.equals("#uwbuild"))
 				primCanBuild=true;
-		for(Command c : primary.nationcommands)
+		for(Command c : secondary.nationcommands)
 			if(c.command.equals("#uwbuild"))
 				secCanBuild=true;
 		
@@ -68,54 +69,11 @@ public class ColonyGenerator {
 		if(primCanBuild||secCanBuild)
 		{
 			//checking primary race for being capable uw
-			//for some god damn reason c.command=="#amphibian" didnt worked
-			for(Command c : primary.specialcommands)
-			{
-				//System.out.println("sc:"+c.command);
-				if(c.command.equals("#amphibian") || c.command.equals("#pooramphibian"))
-					primCanUw=true;
-			}
-			if(!primCanUw)
-			for(Command c : primary.unitcommands)
-			{
-				//System.out.println("uc:"+c.command);
-				if(c.command.equals("#amphibian") || c.command.equals("#pooramphibian"))
-					primCanUw=true;
-			}
-			if(!primCanUw)
-			for(Command c : primary.nationcommands)
-			{
-				//System.out.println("nc:"+c.command);
-				if(c.command.equals("#amphibian") || c.command.equals("#pooramphibian"))
-					primCanUw=true;
-			}
-			if(!primCanUw)
-				for(Pose p : primary.poses)
-					for(Command c : p.commands)
-					{
-						//System.out.println("pc:"+c.command+"."+c.command.equals("#amphibian"));
-						if(c.command.equals("#amphibian") || c.command.equals("#pooramphibian"))
-						{
-							primCanUw=true;
-						}
-					}
+			if(traitPresent(primary,"#amphibian")||traitPresent(primary,"#pooramphibian"))
+				primCanUw=true;
 			//checking secondary race for being capable uw
-			for(Command c : secondary.specialcommands)
-				if(c.command.equals("#amphibian") || c.command.equals("#pooramphibian"))
-					secCanUw=true;
-			if(!secCanUw)
-			for(Command c : secondary.unitcommands)
-				if(c.command.equals("#amphibian") || c.command.equals("#pooramphibian"))
-					secCanUw=true;
-			if(!secCanUw)
-			for(Command c : secondary.nationcommands)
-				if(c.command.equals("#amphibian") || c.command.equals("#pooramphibian"))
-					secCanUw=true;
-			if(!secCanUw)
-				for(Pose p : secondary.poses)
-					for(Command c : p.commands)
-					 if(c.command.equals("#amphibian") || c.command.equals("#pooramphibian"))
-						 secCanUw=true;
+			if(traitPresent(secondary,"#amphibian")||traitPresent(secondary,"#pooramphibian"))
+				secCanUw=true;
 			
 			//if(secCanBuild&&secCanUw)Res="secrace";
 			if(primCanBuild&&secCanUw||secCanBuild&&secCanUw)Res="secrace";
@@ -132,10 +90,43 @@ public class ColonyGenerator {
 		colonySubType = Res;
 	}
 	
-	
+	public String getColonyType(List<String> checkTraits)
+	{
+		String res = "none";
+		double chance = r.nextDouble(1);
+		
+		boolean primGood=false;
+		boolean secGood=false;
+		
+		for(String s:checkTraits)
+		{
+			if(traitPresent(primary, s))
+			{
+				primGood=true;
+			}else primGood=false;
+			if(traitPresent(secondary, s))
+			{
+				secGood=true;
+			}else secGood=false;
+		}
+		if(primGood)
+		{
+			//primrace
+		}
+		if(secGood)
+		{
+			//secrace
+		}
+		if(primGood&&secGood)
+		{
+			//mixed
+		}
+		colonySubType=res; //for both colonygen and colony
+		return res;
+	}
 	private void setSpecrecTag()
 	{
-	  if(colonyType=="uwcolony")
+	  if(colonyType=="uw")
 		  specrecInfo.add("specrec", "uw");
 	}
 	
@@ -242,4 +233,25 @@ public class ColonyGenerator {
 		return maxamounts;
 	}
 	
+	private boolean traitPresent(Race race, String traitCommand)
+	{
+		boolean yes=false;
+		for(Command c : race.specialcommands)
+			if(c.command.equals(traitCommand))
+				yes=true;
+		if(!yes)
+		for(Command c : race.unitcommands)
+			if(c.command.equals(traitCommand))
+				yes=true;
+		if(!yes)
+		for(Command c : race.nationcommands)
+			if(c.command.equals(traitCommand))
+				yes=true;
+		if(!yes)
+			for(Pose p : race.poses)
+				for(Command c : p.commands)
+				 if(c.command.equals(traitCommand))
+					 yes=true;
+		return yes;
+	}
 }

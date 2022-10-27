@@ -1,0 +1,42 @@
+package nationGen.entities;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import nationGen.NationGen;
+import nationGen.NationGenAssets;
+import nationGen.misc.Tags;
+import nationGen.nation.Nation;
+import nationGen.rostergeneration.ColonyGenerator;
+import nationGen.units.Unit;
+
+public class Colony {
+	NationGen nationGen;
+	private Nation nation;
+	private Random r;
+	
+	public Map<String, List<Unit>> unitlists = new LinkedHashMap<>();
+	public Map<String, List<Unit>> comlists = new LinkedHashMap<>();
+	
+	private Race primary;
+	private Race secondary;
+	private String colonyType;
+	private String colonySubType;
+	private Tags specrecInfo;
+	private ColonyGenerator colGen;
+	
+	public Colony(NationGen g, Nation n, NationGenAssets assets, String colType)
+	{
+		nationGen = g;
+		nation = n;
+		primary = nation.races.get(0);
+		secondary = nation.races.get(1);
+		this.r = new Random(n.random.nextInt());
+		colonyType=colType;
+		colGen=new ColonyGenerator(g,n,assets,colType);
+		
+	}
+
+}

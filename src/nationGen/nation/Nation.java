@@ -6,6 +6,7 @@ import com.elmokki.Generic;
 import nationGen.NationGen;
 import nationGen.NationGenAssets;
 import nationGen.Settings.SettingsType;
+import nationGen.entities.Colony;
 import nationGen.entities.Filter;
 import nationGen.entities.Race;
 import nationGen.entities.Theme;
@@ -44,7 +45,7 @@ public class Nation {
 	
 	public NationGen nationGen;
 	private NationGenAssets assets;
-	public ColonyGenerator colGen; //its used multiple times across different methods, but have same setup
+	//public ColonyGenerator colGen; //its used multiple times across different methods, but have same setup
 	
 	private final long seed;
 	public final Random random;
@@ -61,6 +62,7 @@ public class Nation {
 	public List<Site> sites = new ArrayList<>();
 	public List<Theme> nationthemes = new ArrayList<>();
 	public List<Filter> spells = new ArrayList<>();
+	public List<Colony> colonies = new ArrayList<>();
 	
 	public Map<String, List<Unit>> unitlists = new LinkedHashMap<>();
 	public Map<String, List<Unit>> comlists = new LinkedHashMap<>();
@@ -90,7 +92,7 @@ public class Nation {
 		comlists.put("priests", new ArrayList<>());
 		comlists.put("mages", new ArrayList<>());
 		
-		this.colGen = new ColonyGenerator(ngen,this,assets);
+		//this.colGen = new ColonyGenerator(ngen,this,assets);
 		generate(restrictions);
 	}
 	
@@ -188,10 +190,32 @@ public class Nation {
 		{
 			races.get(1).addCommand(command);
 		}
-		colGen.getUWColonyType(races.get(0), races.get(1));
+		//colGen.getUWColonyType(races.get(0), races.get(1));
 	}
 	
-	
+	private void generateColonies(int randomControlKey)
+	{
+		
+		//isUwColonyPossible
+		Boolean primCanBuild = false;
+		Boolean secCanBuild = false;
+		
+		//checking which races can build forts
+		for(Command c : races.get(0).nationcommands)
+			if(c.command.equals("#uwbuild"))
+				primCanBuild=true;
+		for(Command c : races.get(1).nationcommands)
+			if(c.command.equals("#uwbuild"))
+				secCanBuild=true;
+		if(primCanBuild||secCanBuild)
+		{
+			
+			Colony uwCol = new Colony(nationGen,this,assets,"uw");
+			
+			colonies.add(uwCol);
+		}
+		//should be similar chunk of code for any single type
+	}
 	private void generateMagesAndPriests()
 	{
 		// Mages and priests
@@ -200,31 +224,31 @@ public class Nation {
 		comlists.get("priests").addAll(mageGen.generatePriests());
 	}
 	
-	private void generateTroops()
+	private void generateTroops(int randomControlKey)
 	{
 		// Troops
-		RosterGenerator g = new RosterGenerator(nationGen, this, assets);
+		RosterGenerator g = new RosterGenerator(nationGen, this, assets, randomControlKey);
 		g.setup(g.GetClassicMaxamounts());
 		//put colonial troop affecting and type determining here
-		colGen.setMaxes(g);
-		if(colGen.returnNewMax()!=g.getMaxUnits())
-		{
+		//colGen.setMaxes(g);
+		//if(colGen.returnNewMax()!=g.getMaxUnits())
+		//{
 		//this 3 deltas is how many units could go to colony
-		int dMax=g.getMaxUnits()-colGen.returnNewMax();
-		int dPMax=g.getMaxPrimaryUnits()-colGen.returnNewPrimMax();
-		double dSMax=(g.getMaxSecondaryUnits()-colGen.returnNewSecMax());
+		//int dMax=g.getMaxUnits()-colGen.returnNewMax();
+		//int dPMax=g.getMaxPrimaryUnits()-colGen.returnNewPrimMax();
+		//double dSMax=(g.getMaxSecondaryUnits()-colGen.returnNewSecMax());
 	
-		g.addToMaxes(-1* colGen.returnNewMax(), -1*colGen.returnNewPrimMax(), -1*(int)colGen.returnNewSecMax()); //should use Math.round? 
+		//g.addToMaxes(-1* colGen.returnNewMax(), -1*colGen.returnNewPrimMax(), -1*(int)colGen.returnNewSecMax()); //should use Math.round? 
 		g.executeGen(null);
 		
 		//g.setup(colGen.getUwMaxamounts());
-		g.setMaxamounts(colGen.getUwMaxamounts());
-		g.setMaxes(dMax, dPMax, dSMax);
-		g.executeGen(colGen.specrecInfo);
+		//g.setMaxamounts(colGen.getUwMaxamounts());
+		//g.setMaxes(dMax, dPMax, dSMax);
+		//g.executeGen(colGen.specrecInfo);
 		//bebug
-		System.out.println("colgen");
-		}
-		else g.executeGen(null);
+		//System.out.println("colgen");
+		//}
+		//else g.executeGen(null);
 		
 		g = null;
 		System.gc();
@@ -568,14 +592,15 @@ public class Nation {
 		}
 
 		generateMagesAndPriests();
-
+		int troopsRandom = this.random.nextInt(); //this thing is needed to synchronize prediction of unit amounts with actual generation
+		generateColonies(troopsRandom); //to apply magic and dont miss restrictions
 		if (!checkRestrictions(restrictions, RestrictionType.MageWithAccess, RestrictionType.MagicAccess,
 				RestrictionType.MagicDiversity, RestrictionType.PrimaryRace))
 		{
 			return;
 		}
 
-		generateTroops();
+		generateTroops(troopsRandom);
 		generateSacreds();
 
 		if (!checkRestrictions(restrictions, RestrictionType.SacredRace, RestrictionType.RecAnywhereSacreds))

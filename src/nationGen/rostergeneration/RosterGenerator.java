@@ -60,6 +60,18 @@ public class RosterGenerator {
 
 	}
 	
+	public RosterGenerator(NationGen g, Nation n, NationGenAssets assets, int random)
+	{
+		nationGen = g;
+		nation = n;
+		this.r = new Random(random);
+		tgen = new TroopGenerator(nationGen, nation, assets);
+		tgen.setTemplates(this.templates);
+		this.chandler = new ChanceIncHandler(n, "rostergen");
+		skipchance = r.nextDouble()*0.1 + 0.05;
+
+	}
+	
 	private boolean canRollNewUnit(Race race)
 	{
 		return getChances(race).hasPossible();
