@@ -31,11 +31,12 @@ public class ColonyGenerator {
 	private int max; //max amount of units for nation
 	private int primmax;
 	private double secondmax;
+	private int randomControlKey;
 	Map<String, Integer> maxamounts = new HashMap<>();
 	Map<String, Integer> amounts = new HashMap<>();
 	
 	
-	public ColonyGenerator(NationGen g, Nation n, NationGenAssets assets, String colType)
+	public ColonyGenerator(NationGen g, Nation n, NationGenAssets assets, String colType, int randControlKey)
 	{
 		nationGen = g;
 		nation = n;
@@ -43,7 +44,7 @@ public class ColonyGenerator {
 		colonyType=colType;
 		this.specrecInfo = new Tags();
 		setSpecrecTag();
-		
+		randomControlKey=randControlKey;
 	}
 	
 
@@ -109,21 +110,54 @@ public class ColonyGenerator {
 				secGood=true;
 			}else secGood=false;
 		}
-		if(primGood)
-		{
-			//primrace
-		}
-		if(secGood)
-		{
-			//secrace
-		}
+		
+		recieveMaxes(randomControlKey);
+		//should i recheck uwbuild for races?..
+		//before it was checking primrace only and idk which uwbuild are applyed for the nation
+		
 		if(primGood&&secGood)
 		{
 			//mixed
+			//but maybe also not-mixed as possibility
+			if(chance>=0.33)// 2/3, all other chances are 1\2
+			{
+				res="mixrace";
+				if(secondmax==0)res+="_all";
+			}else
+			{
+				if(chance<=0.165)
+				{
+					res="primrace";
+					if(chance>=0.0825)res+="_big";
+				}else
+				{
+					res="secrace";
+					if(chance>=0.2475)res+="_big";
+					if(secondmax==0)res+="_all";
+				}
+			}
+			
+		}else
+		{
+			//non-mixed then
+			if(primGood)
+			{
+				//primrace
+				res="primrace";
+				if(chance>=0.5)res+="_big";
+			}
+			if(secGood)
+			{
+				//secrace
+				res="secrace";
+				if(chance>=0.5)res+="_big";
+				if(secondmax==0)res+="_all";
+			}
 		}
 		colonySubType=res; //for both colonygen and colony
 		return res;
 	}
+	//add here tangs when new colony types will arrive
 	private void setSpecrecTag()
 	{
 	  if(colonyType=="uw")
@@ -135,6 +169,18 @@ public class ColonyGenerator {
 		primmax=primmaxu;
 		max=maxu;
 	    secondmax=secmaxu;
+	}
+	//this method predicts maxes by using in setup the same integer for random initialization
+	//probably classic troopgen, but without execution
+	public void recieveMaxes(int controllingRandomKey)
+	{
+		RosterGenerator tempRostGen = new RosterGenerator(nationGen,nation,assets,controllingRandomKey);
+		tempRostGen.setup(tempRostGen.GetClassicMaxamounts());
+		max=tempRostGen.getMaxUnits();
+		primmax=tempRostGen.getMaxPrimaryUnits();
+		secondmax=tempRostGen.getMaxSecondaryUnits();
+		tempRostGen = null;
+		System.gc();
 	}
 	
 	//changes max, primmax and secondmax to affect generation of the main nation roster

@@ -27,6 +27,7 @@ public class Colony {
 	private Tags specrecInfo;
 	private ColonyGenerator colGen;
 	
+	
 	public Colony(NationGen g, Nation n, NationGenAssets assets, String colType)
 	{
 		nationGen = g;
@@ -35,8 +36,18 @@ public class Colony {
 		secondary = nation.races.get(1);
 		this.r = new Random(n.random.nextInt());
 		colonyType=colType;
-		colGen=new ColonyGenerator(g,n,assets,colType);
+		colGen=new ColonyGenerator(g,n,assets,colType,n.random.nextInt());
 		
+	}
+	public Colony(NationGen g, Nation n, NationGenAssets assets, String colType, int randomControlKey)
+	{
+		nationGen = g;
+		nation = n;
+		primary = nation.races.get(0);
+		secondary = nation.races.get(1);
+		this.r = new Random(n.random.nextInt());
+		colonyType=colType;
+		colGen=new ColonyGenerator(g,n,assets,colType,randomControlKey);
 	}
 
 }

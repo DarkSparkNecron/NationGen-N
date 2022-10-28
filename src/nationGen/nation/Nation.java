@@ -66,6 +66,8 @@ public class Nation {
 	
 	public Map<String, List<Unit>> unitlists = new LinkedHashMap<>();
 	public Map<String, List<Unit>> comlists = new LinkedHashMap<>();
+	public Map<String, List<Unit>> unitlistsSave = new LinkedHashMap<>();
+	public Map<String, List<Unit>> comlistsSave = new LinkedHashMap<>();
 	
 	public List<Race> races = new ArrayList<>();
 	public String nationalitysuffix;
@@ -592,22 +594,27 @@ public class Nation {
 		}
 
 		generateMagesAndPriests();
+		comlistsSave=comlists;
 		int troopsRandom = this.random.nextInt(); //this thing is needed to synchronize prediction of unit amounts with actual generation
 		generateColonies(troopsRandom); //to apply magic and dont miss restrictions
+		//insert colonial mages here
 		if (!checkRestrictions(restrictions, RestrictionType.MageWithAccess, RestrictionType.MagicAccess,
 				RestrictionType.MagicDiversity, RestrictionType.PrimaryRace))
 		{
 			return;
 		}
-
+		comlists=comlistsSave;//restoring original list
+		
 		generateTroops(troopsRandom);
 		generateSacreds();
-
+		unitlistsSave=unitlists;
+		//insert colonial troops here
 		if (!checkRestrictions(restrictions, RestrictionType.SacredRace, RestrictionType.RecAnywhereSacreds))
 		{
 			return;
 		}
-
+		unitlists=unitlistsSave;//restoring, so they wouldnt steal commanders
+		
 		generateScouts();
 		generateSpecialComs();
 		generateGods();
