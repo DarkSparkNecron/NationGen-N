@@ -36,7 +36,7 @@ public class Colony {
 		secondary = nation.races.get(1);
 		this.r = new Random(n.random.nextInt());
 		colonyType=colType;
-		colGen=new ColonyGenerator(g,n,assets,colType,n.random.nextInt());
+		colGen=new ColonyGenerator(g,n,assets,this,colType,n.random.nextInt());
 		
 	}
 	public Colony(NationGen g, Nation n, NationGenAssets assets, String colType, int randomControlKey)
@@ -47,7 +47,7 @@ public class Colony {
 		secondary = nation.races.get(1);
 		this.r = new Random(n.random.nextInt());
 		colonyType=colType;
-		colGen=new ColonyGenerator(g,n,assets,colType,randomControlKey);
+		colGen=new ColonyGenerator(g,n,assets,this,colType,randomControlKey);
 	}
 
 }

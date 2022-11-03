@@ -1093,6 +1093,78 @@ public class MageGenerator extends TroopGenerator {
 
 	}
 	
+	public List<Unit> generateColonialMages(int primaries, List<MagicPath> prio, int power, Tags specrec, String colonySubType, Race prim, Race sec)
+	{
+		Race race = prim;
+		
+		double bonussecchance = 1;
+		bonussecchance += race.tags.getDouble("secondaryracemagemod").orElse(0D);
+		bonussecchance -= sec.tags.getDouble("primaryracemagemod").orElse(0D);
+		
+		String sub =colonySubType.split("_")[0];
+		
+		if(sub=="mixrace")
+		{
+		if((this.random.nextDouble() < 0.075 * bonussecchance) && sec.hasRole("mage"))
+			race = sec;
+		else if(!prim.hasRole("mage"))
+			race = sec;
+		}
+		//mostly safeguard to actually generate mages
+		if(sub=="primrace")
+		{
+			if(!prim.hasRole("mage"))
+				race = sec;
+		}
+		if(sub=="secrace")
+		{
+			race = sec;
+			if(!sec.hasRole("mage"))
+				race = prim;
+		}
+		
+		
+		List<Unit> bases = generateBases("mage", race, 1, 2);
+		for(Unit u: bases)
+			u.tags.addAll(specrec); //also here should be automatically applyed colony tag, which is in colGen's specrec by default
+		
+		int tier;
+		if(power >= 5 || (power >= 4 && random.nextBoolean()) || (power >= 3 && random.nextDouble() > 0.66) | (power >= 2 && random.nextDouble() > 0.95))
+			tier = 3;
+		else if(power > 2 || (random.nextBoolean() && power != 1) || random.nextDouble() > 0.90)
+			tier = 2;
+		else
+			tier = 1;	
+			
+		List<MagicPattern> available = getPatternsOfLevel(getPatternsForTier(0, primaries), tier);
+		
+		ChanceIncHandler chandler = new ChanceIncHandler(nation, "magegen");
+		MagicPattern pattern = chandler.handleChanceIncs(bases.get(0), available).getRandom(this.random);
+
+		pattern.getPathsAtleastAt(1);
+		if(prio == null)
+		{
+			prio = this.getPrios(bases.get(0));
+		}
+	
+
+		MagicFilter f = getMagicFilter(prio, pattern, 0);
+		bases.get(0).appliedFilters.add(f);
+		f.tags.add("description", getPathDescription(bases.get(0).getMagicPicks(true)));
+		bases.get(0).tags.add("extramage",tier);
+		bases.get(0).tags.addName("tier"+Integer.toString(tier));
+		
+		//f.prio = prio;
+		//f.pattern = pattern;
+		
+		bases.get(0).color = nation.colors[2];		
+		
+		this.equipBase(bases.get(0), 2);
+		
+		return bases;
+
+	}
+
 	public List<Unit> generatePriests()
 	{		
 

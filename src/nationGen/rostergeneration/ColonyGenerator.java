@@ -3,9 +3,11 @@ package nationGen.rostergeneration;
 import nationGen.NationGen;
 import nationGen.NationGenAssets;
 import nationGen.chances.ChanceDistribution;
+import nationGen.entities.Colony;
 import nationGen.entities.Pose;
 import nationGen.entities.Race;
 import nationGen.items.Item;
+import nationGen.magic.MageGenerator;
 import nationGen.misc.*;
 import nationGen.nation.Nation;
 import nationGen.rostergeneration.montagtemplates.TroopMontagTemplate;
@@ -20,6 +22,7 @@ public class ColonyGenerator {
 	private Nation nation;
 	private Random r;
 	NationGenAssets assets;
+	private Colony colony;
 	
 	//national&colonial info
 	private Race primary;
@@ -36,15 +39,18 @@ public class ColonyGenerator {
 	Map<String, Integer> amounts = new HashMap<>();
 	
 	
-	public ColonyGenerator(NationGen g, Nation n, NationGenAssets assets, String colType, int randControlKey)
+	public ColonyGenerator(NationGen g, Nation n, NationGenAssets assets, Colony col, String colType, int randControlKey)
 	{
 		nationGen = g;
 		nation = n;
 		this.r = new Random(n.random.nextInt());
 		colonyType=colType;
 		this.specrecInfo = new Tags();
-		setSpecrecTag();
+		//setSpecrecTag();
 		randomControlKey=randControlKey;
+		colony=col;
+		primary = nation.races.get(0);
+		secondary = nation.races.get(1);
 	}
 	
 
@@ -91,7 +97,7 @@ public class ColonyGenerator {
 		colonySubType = Res;
 	}
 	
-	public String getColonyType(List<String> checkTraits)
+	public String getColonySubType(List<String> checkTraits)
 	{
 		String res = "none";
 		double chance = r.nextDouble(1);
@@ -160,6 +166,7 @@ public class ColonyGenerator {
 	//add here tangs when new colony types will arrive
 	private void setSpecrecTag()
 	{
+		specrecInfo.add("colony", "");
 	  if(colonyType=="uw")
 		  specrecInfo.add("specrec", "uw");
 	}
@@ -299,5 +306,29 @@ public class ColonyGenerator {
 				 if(c.command.equals(traitCommand))
 					 yes=true;
 		return yes;
+	}
+	
+	public void init()
+	{
+		List<String> ls = new ArrayList<>();
+		
+		setSpecrecTag();
+		if(colonyType=="uw")
+		{
+			ls.add("#amphibian");
+			ls.add("#pooramphibian");
+			//currently have no realisation among races
+			//ls.add("#aquatic");
+			//ls.add("#giftofwater");
+		}
+		colonySubType = getColonySubType(ls);
+		//got colonySubType and need to return it somehow back
+		
+		//btw its magic layout time
+		
+		MageGenerator magMeg = new MageGenerator(nationGen, nation, assets);
+		List<Unit> colMages = magMeg.generateColonialMages(max, null, max, specrecInfo, colonySubType, primary, secondary);
+		//define primaries, list of magic paths and "power"
+		
 	}
 }
