@@ -227,6 +227,41 @@ public class Nation {
 		MageGenerator mageGen = new MageGenerator(nationGen, this, assets);
 		comlists.get("mages").addAll(mageGen.generateMages());
 		comlists.get("priests").addAll(mageGen.generatePriests());
+		
+		for (Colony col: colonies)
+		{
+			String sub =col.colonySubType.split("_")[0];
+			String subsub =sub.split("_")[1];
+			double pChance = this.random.nextDouble(1);
+			double mChance = this.random.nextDouble(1);
+			
+			boolean mageExists = false;
+			boolean priestExists = false;
+			System.out.println("colony bebug. sub:"+sub+",subsub:"+subsub);
+			if(sub=="mixrace" || subsub=="big" || subsub=="all")
+			{
+				mageExists = true;
+				priestExists = true;
+			}else
+			{
+				if(pChance>0.7)priestExists = true;
+				if(mChance>0.5)mageExists = true;
+			}
+			
+			if(mageExists)
+			{
+			//generating single mage of second tier with 1 prio, i even dont know what it is lol
+			col.comlists.get("mages").addAll(mageGen.generateColonialMages(1,mageGen.getShuffledPrios(comlists.get("mages")),2,col.specrecInfo,col.colonySubType,col.primary,col.secondary));
+			comlists.get("mages").addAll(col.comlists.get("mages"));
+			}
+			if(priestExists)
+			{
+			//generate T1 priest (have possibility to greater tiers, but not doing it) and decide if mage is sacred
+			col.comlists.get("priests").addAll(mageGen.generateColonialPriests(1, col.colonySubType, col.primary, col.secondary, col.specrecInfo));
+			comlists.get("priests").addAll(col.comlists.get("priests"));
+			}
+			
+		}
 	}
 	
 	private void generateTroops(int randomControlKey)
@@ -596,10 +631,10 @@ public class Nation {
 			return;
 		}
 
-		generateMagesAndPriests();
+		
 		int troopsRandom = this.random.nextInt(); //this thing is needed to synchronize prediction of unit amounts with actual generation
 		generateColonies(troopsRandom); //to apply magic and dont miss restrictions
-		//insert colonial mages here
+		generateMagesAndPriests();
 		if (!checkRestrictions(restrictions, RestrictionType.MageWithAccess, RestrictionType.MagicAccess,
 				RestrictionType.MagicDiversity, RestrictionType.PrimaryRace))
 		{

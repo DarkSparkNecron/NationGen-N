@@ -116,7 +116,7 @@ public class MageGenerator extends TroopGenerator {
 		return list;
 	}
 	
-	private List<MagicPath> getShuffledPrios(List<Unit> units)
+	public List<MagicPath> getShuffledPrios(List<Unit> units)
 	{
 		List<Filter> orig = new ArrayList<>();
 		List<MagicPath> newlist = new ArrayList<>();
@@ -1093,6 +1093,8 @@ public class MageGenerator extends TroopGenerator {
 
 	}
 	
+	
+	//to generate colomial mages, when making custom mage generator or anjusting existing for uw nations look here
 	public List<Unit> generateColonialMages(int primaries, List<MagicPath> prio, int power, Tags specrec, String colonySubType, Race prim, Race sec)
 	{
 		Race race = prim;
@@ -1124,9 +1126,9 @@ public class MageGenerator extends TroopGenerator {
 		}
 		
 		
-		List<Unit> bases = generateBases("mage", race, 1, 2);
+		List<Unit> bases = generateBases("mage", race, 1, power); //1 mage of 'power' tier, usually should be 2
 		for(Unit u: bases)
-			u.tags.addAll(specrec); //also here should be automatically applyed colony tag, which is in colGen's specrec by default
+			u.tags.addAll(specrec); //also here should be automatically applied colony tag, which is in colGen's specrec by default
 		
 		int tier;
 		if(power >= 5 || (power >= 4 && random.nextBoolean()) || (power >= 3 && random.nextDouble() > 0.66) | (power >= 2 && random.nextDouble() > 0.95))
@@ -1140,14 +1142,14 @@ public class MageGenerator extends TroopGenerator {
 		
 		ChanceIncHandler chandler = new ChanceIncHandler(nation, "magegen");
 		MagicPattern pattern = chandler.handleChanceIncs(bases.get(0), available).getRandom(this.random);
-
+		
 		pattern.getPathsAtleastAt(1);
 		if(prio == null)
 		{
 			prio = this.getPrios(bases.get(0));
 		}
 	
-
+		//btw as yoiu can see all manipulations are happening only with first base, so only 1 additional mage for now
 		MagicFilter f = getMagicFilter(prio, pattern, 0);
 		bases.get(0).appliedFilters.add(f);
 		f.tags.add("description", getPathDescription(bases.get(0).getMagicPicks(true)));
@@ -1159,12 +1161,102 @@ public class MageGenerator extends TroopGenerator {
 		
 		bases.get(0).color = nation.colors[2];		
 		
-		this.equipBase(bases.get(0), 2);
+		this.equipBase(bases.get(0), power);
+		this.resolveAge(bases);
+		this.applyStats(bases.get(0));
+		
+		int priestrand = this.random.nextInt(4);
+		if(priestrand>0 && priestrand<4) //50% chance of trying to become 1D or 2D priest
+		this.upgradeToPriest(bases, priestrand);
 		
 		return bases;
 
 	}
+	
+	private List<Unit> upgradeToPriest(List<Unit> magelist, int index)
+	{
+		//making mage holy, stolen from priestgen
+		
+				Random r = this.random;
+				
+				
+				final double priest_H1_UpChance = Generic.getAllNationTags(nation).getAllValues("priest_H1_upgradechance").stream()
+						.map(Arg::getDouble)
+						.max(Double::compareTo)
+						.orElse(0.75);
+				final double priest_H2_UpChance = Generic.getAllNationTags(nation).getAllValues("priest_H2_upgradechance").stream()
+						.map(Arg::getDouble)
+						.max(Double::compareTo)
+						.orElse(0.25);
+				
+				int priestStrengthFromRandom = 1;
+				if(r.nextDouble() < priest_H1_UpChance)
+				{
+					priestStrengthFromRandom++;
+					if(r.nextDouble() < priest_H2_UpChance)
+						priestStrengthFromRandom++;
+				}
+				
+				final int highestPriestLevel = Generic.getAllNationTags(nation).getAllValues("highestpriestlevel").stream()
+						.map(Arg::getInt)
+						.max(Integer::compareTo)
+						.orElse(priestStrengthFromRandom);
+				
+				final int maxlevel = Generic.getAllNationTags(nation).getAllValues("maxpriestlevel").stream()
+						.map(Arg::getInt)
+						.max(Integer::compareTo)
+						.orElse(10);
+				
+				final int maxStrength = Math.min(maxlevel, highestPriestLevel);
+				
+				final double magePriestChance = Generic.getAllNationTags(nation).getAllValues("magepriestchance").stream()
+						.map(Arg::getDouble)
+						.max(Double::compareTo)
+						.orElse(0.3);
+						
+				boolean magePriests = r.nextDouble() < magePriestChance;
+				
+				//can upgrade up to T2
+				int sacredMageTiers = 0;
+				if(r.nextDouble() < 0.5)
+				{
+					sacredMageTiers++;
+					if(r.nextDouble() < 0.5)
+					{
+						sacredMageTiers++;
+					}
+				}
+				if(r.nextBoolean())
+					sacredMageTiers = 0;
+				
+				// Adjust color
+				Color priestcolor = nation.colors[1];
+				if(!magePriests || (priestcolor.getRed() + priestcolor.getBlue() + priestcolor.getGreen() < 660))
+				{
+					priestcolor = priestcolor.brighter();
+				}
+				else
+				{
+					priestcolor = priestcolor.darker();
+				}
+				int priestextracost = Generic.getAllNationTags(nation).getInt("priestextracost").orElse(0);
+				int priestminrpcost = Generic.getAllNationTags(nation).getInt("priestminrpcost").orElse(0);
 
+				
+				for (Unit u: magelist)
+				{
+					u.commands.add(new Command("#holy"));
+					u.appliedFilters.add(this.getPriestPattern(sacredMageTiers, sacredMageTiers == maxStrength));						
+					u.tags.addName("magepriest");
+					u.commands.add(Command.args("#gcost", "+" + (10*sacredMageTiers + sacredMageTiers * priestextracost)));
+
+					//force slow to recruit for H3s
+					if (sacredMageTiers > 2 && u.getCommandValue("#rpcost", 0) == 2)
+						u.commands.add(Command.args("#rpcost", "+2"));	
+				}
+				
+				return magelist;
+	}
 	public List<Unit> generatePriests()
 	{		
 
@@ -1205,7 +1297,7 @@ public class MageGenerator extends TroopGenerator {
 				.orElse(10);
 		
 		final int maxStrength = Math.min(maxlevel, highestPriestLevel);
-
+		
 		final double magePriestChance = Generic.getAllNationTags(nation).getAllValues("magepriestchance").stream()
 				.map(Arg::getDouble)
 				.max(Double::compareTo)
@@ -1464,6 +1556,150 @@ public class MageGenerator extends TroopGenerator {
 		
 		
 		return priests;
+	}
+	
+	public List<Unit> generateColonialPriests(int maxPriestPower, String colonySubType, Race prim, Race sec, Tags specrec)
+	{
+		//race deciding
+		String sub =colonySubType.split("_")[0];
+		Race prace=prim;
+		
+		if(sub=="mixrace")
+		{
+		if((this.random.nextDouble() < 0.075) && sec.hasRole("priest"))
+			prace = sec;
+		else if(!prim.hasRole("priest"))
+			prace = sec;
+		}
+		//mostly safeguard to actually generate mages
+		if(sub=="primrace")
+		{
+			if(!prim.hasRole("priest"))
+				prace = sec;
+		}
+		if(sub=="secrace")
+		{
+			prace = sec;
+			if(!sec.hasRole("priest"))
+				prace = prim;
+		}
+		
+		//getting limitation on possible priest level
+		Random r = this.random;
+		
+		final double priest_H1_UpChance = Generic.getAllNationTags(nation).getAllValues("priest_H1_upgradechance").stream()
+				.map(Arg::getDouble)
+				.max(Double::compareTo)
+				.orElse(0.75);
+		
+		
+		final double priest_H2_UpChance = Generic.getAllNationTags(nation).getAllValues("priest_H2_upgradechance").stream()
+				.map(Arg::getDouble)
+				.max(Double::compareTo)
+				.orElse(0.25);
+		
+		int priestStrengthFromRandom = 1;
+		if(r.nextDouble() < priest_H1_UpChance)
+		{
+			priestStrengthFromRandom++;
+			if(r.nextDouble() < priest_H2_UpChance)
+				priestStrengthFromRandom++;
+		}
+		
+		final int highestPriestLevel = Generic.getAllNationTags(nation).getAllValues("highestpriestlevel").stream()
+				.map(Arg::getInt)
+				.max(Integer::compareTo)
+				.orElse(priestStrengthFromRandom);
+		
+		final int maxlevel = Generic.getAllNationTags(nation).getAllValues("maxpriestlevel").stream()
+				.map(Arg::getInt)
+				.max(Integer::compareTo)
+				.orElse(10);
+		
+		
+		
+		int priestextracost = Generic.getAllNationTags(nation).getInt("priestextracost").orElse(0);
+		int priestminrpcost = Generic.getAllNationTags(nation).getInt("priestminrpcost").orElse(0);
+
+		
+		//strength
+		final int maxStrength = Math.min(maxlevel, highestPriestLevel);
+		
+		
+		int currentPower=maxPriestPower;
+		if(maxStrength<maxPriestPower)
+			currentPower=maxStrength;
+		//cost & smth
+		int priestsFrom = 0;
+		if(maxStrength > 1 && r.nextDouble() < 0.75)
+		{
+			if(r.nextDouble() < 0.25)
+				priestsFrom = r.nextInt(maxStrength + 1);
+			else
+				priestsFrom = Math.min(2, maxStrength);
+		}
+		
+		//starting generating
+		// Adjust color
+		Color priestcolor = nation.colors[1];
+				if((priestcolor.getRed() + priestcolor.getBlue() + priestcolor.getGreen() < 660))
+				{
+					priestcolor = priestcolor.brighter();
+				}
+				else
+				{
+					priestcolor = priestcolor.darker();
+				}
+				
+		List<Unit> priests = new ArrayList<Unit>();
+		
+		
+		while(currentPower>0)
+		{
+		
+		if((currentPower > 1) || currentPower == 1 || currentPower <= priestsFrom)
+		{
+			Unit u;
+			if(priests.size() > 0)
+			{
+				u = deriveBasesFrom(1, "priest", priests.get(0), priests.get(0).race, currentPower + 1, currentPower).get(0);
+			}
+			else
+			{
+				int str = currentPower;
+				if(r.nextBoolean())
+					str = Math.min(currentPower + 1, 3);
+				
+				u = this.generateBases("priest", prace, 1, str).get(0);
+			}
+			u.commands.add(Command.args("#gcost", "+" + (20*currentPower - 10) ));
+
+			u.color = priestcolor;
+			u.appliedFilters.add(this.getPriestPattern(currentPower, currentPower == maxStrength));
+			u.commands.add(new Command("#holy"));
+			u.commands.add(Command.args("#gcost", "+" + ((int)(Math.pow(2, currentPower))*10 + currentPower * priestextracost)));
+			u.tags.add("priest", currentPower);			
+			u.tags.addAll(specrec);
+			
+			u.commands.add(Command.args("#mr", "+" + (2 + currentPower)));
+
+			
+
+			
+			//List<String> body = new ArrayList<String>();	// Set a temporary null description for priests
+			(new CommanderGenerator(this.nationGen, this.nation, assets)).generateDescription(u, false, false, false);
+			//body.add();					
+	
+			//body.add("\"No description\"");
+			//u.commands.add(new Command("#descr", body));
+
+			priests.add(0, u);
+		}
+		currentPower--;
+		}	
+		
+		
+		return null;
 	}
 	
 	public static void determineSpecialLeadership(Unit u, boolean isPriest)

@@ -20,11 +20,11 @@ public class Colony {
 	public Map<String, List<Unit>> unitlists = new LinkedHashMap<>();
 	public Map<String, List<Unit>> comlists = new LinkedHashMap<>();
 	
-	private Race primary;
-	private Race secondary;
+	public Race primary;
+	public Race secondary;
 	private String colonyType;
-	private String colonySubType;
-	private Tags specrecInfo;
+	public String colonySubType;
+	public Tags specrecInfo;
 	private ColonyGenerator colGen;
 	
 	

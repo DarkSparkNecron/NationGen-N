@@ -166,7 +166,7 @@ public class ColonyGenerator {
 	//add here tangs when new colony types will arrive
 	private void setSpecrecTag()
 	{
-		specrecInfo.add("colony", "");
+		specrecInfo.add("colony", "");//for pointing out that this unit is not from the main roster and comGen+PDgen should take that into account
 	  if(colonyType=="uw")
 		  specrecInfo.add("specrec", "uw");
 	}
