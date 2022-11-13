@@ -49,5 +49,8 @@ public class Colony {
 		colonyType=colType;
 		colGen=new ColonyGenerator(g,n,assets,this,colType,randomControlKey);
 	}
-
+	public void doThing()
+	{
+		colGen.makeTroops();
+	}
 }

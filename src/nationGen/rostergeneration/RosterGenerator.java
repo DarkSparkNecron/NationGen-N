@@ -4,6 +4,7 @@ package nationGen.rostergeneration;
 import nationGen.NationGen;
 import nationGen.NationGenAssets;
 import nationGen.chances.ChanceDistribution;
+import nationGen.entities.Colony;
 import nationGen.entities.Pose;
 import nationGen.entities.Race;
 import nationGen.items.Item;
@@ -400,6 +401,203 @@ public class RosterGenerator {
 		
 	
 	
+		
+		tgen = null;
+	
+	}
+	
+	public void executeGen(Colony colony)
+	{
+		Tags specrecData=colony.specrecInfo;
+		String sub =colony.colonySubType.split("_")[0];
+		String subsub = sub.split("_")[1];
+		
+		boolean primAllow = false;
+		boolean secAllow = false;
+		
+		if(sub=="mixrace")
+		{
+			primAllow = true;
+			secAllow = true;
+		}
+		if(sub=="primrace")
+		{
+			primAllow = true;
+			if(subsub=="big")
+				prims+=secs;
+			secs=0;
+		}
+		if(sub=="secrace")
+		{
+			secAllow = true;
+			if(subsub=="big" || subsub=="all")
+				secs=max;
+			prims=0;
+		}
+		//fierse hole -- as epithet
+		int cycles = 0;
+		int incs = 1;
+		
+			
+		while(units < max)
+		{
+
+			Race race = null;
+			if(prims < maxprimaries && r.nextDouble() > secaffinity)
+			{
+				race = primary;
+			}
+			else if(secs < secamount) 
+			{
+				race = secondary;
+			}
+			else if(prims < maxprimaries)
+			{
+				race = primary;
+			}
+	
+
+			
+			
+			if(!canRollNewUnit(race))
+			{
+				if(race == primary)
+				{
+					if(canRollNewUnit(secondary))
+						race = secondary;
+					else
+						break;
+				}
+				
+				else if(race == secondary)
+				{
+					if(canRollNewUnit(primary))
+						race = primary;
+					else
+						break;
+				}
+			}
+			
+
+			
+			
+			
+			cycles++;
+			if(cycles > 100 * incs)
+			{
+				incs++;
+				for (String role : maxamounts.keySet()) {
+					maxamounts.put(role, maxamounts.get(role) + 1);
+				}
+				
+				if(secaffinity > 0)
+					secamount++;
+
+
+			}
+		
+			
+			
+			Map<String, Integer> amounts = new HashMap<>();
+			amounts.put("ranged", ranged.size());
+			amounts.put("infantry", infantry.size());
+			amounts.put("mounted", cavalry.size());
+			amounts.put("chariot", chariot.size());
+
+			String roll = null;
+			int rolls = 0;
+			while(roll == null)
+			{
+				rolls++;
+				
+				roll = rollRole(getChances(race), maxamounts, amounts, race);
+				if(!canGetMoreUnits(race, roll))
+				{
+					roll = null;
+				}
+				
+				if(rolls > 100)
+					break;
+				
+			}
+			if(rolls > 100)
+				break;
+
+			List<Unit> target = null;
+			if(roll.equals("ranged") && maxamounts.get("ranged") > ranged.size() && hasPosesWithoutMaxUnits(race, "ranged"))
+				target = ranged;
+			else if(roll.equals("infantry") && maxamounts.get("infantry") > infantry.size() && hasPosesWithoutMaxUnits(race, "infantry"))
+				target = infantry;
+			else if(roll.equals("mounted") && maxamounts.get("mounted") > cavalry.size() && hasPosesWithoutMaxUnits(race, "mounted"))
+				target = cavalry;
+			else if(roll.equals("chariot") && maxamounts.get("chariot") > chariot.size() && hasPosesWithoutMaxUnits(race, "chariot"))
+				target = chariot;
+			
+			if(race != null && target != null && race.hasRole(roll))
+			{
+			
+				TroopTemplate t = this.chooseTemplate(race, roll);
+				Unit u = tgen.generateUnit(t);
+				
+				//for terrainrec, actually this can lead to bugs where non-uw troops are uw if race is wrong or mount is land-based
+				if(specrecData!=null)
+				{
+					u.tags.addAll(specrecData);
+					System.out.println("adding specrec tags");
+				}
+				
+				
+				if(u != null)
+				{
+					target.add(u);
+					
+					units++;
+					
+					if(race == primary)
+						prims++;
+					else if(race == secondary)
+						secs++;
+
+				}
+				
+				
+			}
+
+			
+
+		}
+		
+		//System.out.println("Start " + ZonedDateTime.now().toLocalTime().truncatedTo(ChronoUnit.SECONDS));
+
+		for(Unit unit : cavalry)
+			if(tgen.unitGen.hasMontagPose(unit))
+				tgen.unitGen.handleMontagUnits(unit, new TroopMontagTemplate(nationGen, nation, tgen), "montagtroops");
+		
+		for(Unit unit : chariot)
+			if(tgen.unitGen.hasMontagPose(unit))
+				tgen.unitGen.handleMontagUnits(unit, new TroopMontagTemplate(nationGen, nation, tgen), "montagtroops");
+		
+		for(Unit unit : ranged)
+			if(tgen.unitGen.hasMontagPose(unit))
+				tgen.unitGen.handleMontagUnits(unit, new TroopMontagTemplate(nationGen, nation, tgen), "montagtroops");
+		
+
+		for(Unit unit : infantry)
+			if(tgen.unitGen.hasMontagPose(unit))
+				tgen.unitGen.handleMontagUnits(unit, new TroopMontagTemplate(nationGen, nation, tgen), "montagtroops");
+		
+		//System.out.println("End " + ZonedDateTime.now().toLocalTime().truncatedTo(ChronoUnit.SECONDS));
+
+		putToColony("ranged", sortToLists(ranged), colony);
+		putToColony("infantry", sortToLists(infantry), colony);
+		putToColony("mounted", sortToLists(cavalry), colony);
+		putToColony("chariot", sortToLists(chariot), colony);
+		
+		//will it work if i add them that way?
+		//putToNation("ranged", sortToLists(ranged));
+		//putToNation("infantry", sortToLists(infantry));
+		//putToNation("mounted", sortToLists(cavalry));
+		//putToNation("chariot", sortToLists(chariot));
 		
 		tgen = null;
 	
@@ -827,6 +1025,21 @@ public class RosterGenerator {
 				nation.unitlists.put(role + "-" + i, new ArrayList<Unit>());
 			
 			nation.unitlists.get(role + "-" + i).addAll(list);
+			
+	
+		}	
+	}
+	
+	private void putToColony(String role, List<List<Unit>> lists, Colony colony)
+	{
+		int i = 0;
+		for(List<Unit> list : lists)
+		{
+			i++;
+			if(colony.unitlists.get(role + "-" + i) == null)
+				colony.unitlists.put(role + "-" + i, new ArrayList<Unit>());
+			
+			colony.unitlists.get(role + "-" + i).addAll(list);
 			
 	
 		}	

@@ -262,6 +262,8 @@ public class Nation {
 			}
 			
 		}
+		mageGen=null;
+		System.gc();
 	}
 	
 	private void generateTroops(int randomControlKey)
@@ -279,7 +281,8 @@ public class Nation {
 		//double dSMax=(g.getMaxSecondaryUnits()-colGen.returnNewSecMax());
 	
 		//g.addToMaxes(-1* colGen.returnNewMax(), -1*colGen.returnNewPrimMax(), -1*(int)colGen.returnNewSecMax()); //should use Math.round? 
-		g.executeGen(null);
+		Tags temp=null;
+		g.executeGen(temp);
 		
 		//g.setup(colGen.getUwMaxamounts());
 		//g.setMaxamounts(colGen.getUwMaxamounts());
@@ -294,7 +297,14 @@ public class Nation {
 		System.gc();
 		
 	}
-	
+	private void generateColonialTroops()
+	{
+		for(Colony col : colonies)
+		{
+			//warning! high chance of troop overlapping and other horrors due to how putTonation arranges roles like "role+i"
+			col.doThing();
+		}
+	}
 	private void generateSacreds()
 	{
 		//// Sacreds and elites
@@ -643,7 +653,7 @@ public class Nation {
 		
 		generateTroops(troopsRandom);
 		generateSacreds();
-		//insert colonial troops here
+		generateColonialTroops();
 		if (!checkRestrictions(restrictions, RestrictionType.SacredRace, RestrictionType.RecAnywhereSacreds))
 		{
 			return;

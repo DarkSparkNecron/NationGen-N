@@ -326,9 +326,24 @@ public class ColonyGenerator {
 		
 		//btw its magic layout time
 		
-		MageGenerator magMeg = new MageGenerator(nationGen, nation, assets);
-		List<Unit> colMages = magMeg.generateColonialMages(max, null, max, specrecInfo, colonySubType, primary, secondary);
+		//MageGenerator magMeg = new MageGenerator(nationGen, nation, assets);
+		//List<Unit> colMages = magMeg.generateColonialMages(max, null, max, specrecInfo, colonySubType, primary, secondary);
 		//define primaries, list of magic paths and "power"
 		
+	}
+	
+	public void makeTroops()
+	{
+		RosterGenerator rostGen = new RosterGenerator(nationGen,nation,assets,randomControlKey);
+		rostGen.setup(getUwMaxamounts()); //as of now only uw
+		//NEED TO MPDIFY UNIT AMOUNT FOR EACH RACE!!
+		rostGen.executeGen(colony);
+		nation.unitlists.get("ranged").addAll(colony.unitlists.get("ranged"));
+		nation.unitlists.get("infantry").addAll(colony.unitlists.get("infantry"));
+		nation.unitlists.get("mounted").addAll(colony.unitlists.get("mounted"));
+		nation.unitlists.get("chariot").addAll(colony.unitlists.get("chariot"));
+		//also there is high risk that units wont appear due to putToNation method thing
+		rostGen=null;
+		System.gc();
 	}
 }
