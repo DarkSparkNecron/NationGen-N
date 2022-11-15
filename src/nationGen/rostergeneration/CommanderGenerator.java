@@ -5,6 +5,7 @@ import com.elmokki.Generic;
 import nationGen.NationGen;
 import nationGen.NationGenAssets;
 import nationGen.chances.EntityChances;
+import nationGen.entities.Colony;
 import nationGen.entities.Filter;
 import nationGen.items.Item;
 import nationGen.magic.MagicPath;
@@ -745,7 +746,686 @@ public class CommanderGenerator extends TroopGenerator {
 		unitGen = null;
 	}
 	
+	public void generateColonialComs(Colony colony)
+	{
 
+		
+		
+		List<Unit> tempComs = new ArrayList<>();
+		List<Unit> possibleComs = new ArrayList<>();
+		colony.selectTroops("infantry").forEach(possibleComs::add);
+		colony.selectTroops("mounted").forEach(possibleComs::add);
+		colony.selectTroops("chariot").forEach(possibleComs::add);
+		colony.selectTroops("sacred").forEach(possibleComs::add);
+
+		colony.selectTroops("montagtroops")
+			.filter(u -> u.guessRole().equals("infantry")
+					|| u.guessRole().equals("chariot")
+					|| u.guessRole().equals("mounted"))
+			.forEach(possibleComs::add);
+
+		colony.selectTroops("montagsacreds").forEach(possibleComs::add);
+		
+		
+		List<String> features = new ArrayList<>();
+		List<String> allFeatures = new ArrayList<>();
+		allFeatures.add("#flying");
+		allFeatures.add("#stealthy");
+		allFeatures.add("#amphibian");
+		allFeatures.add("#pooramphibian");
+		allFeatures.add("#mounted");
+		allFeatures.add("#mountainsurvival");
+		allFeatures.add("#wastesurvival");
+		allFeatures.add("#forestsurvival");
+		allFeatures.add("#swampsurvival");
+		allFeatures.add("#demon");
+		allFeatures.add("#undead");
+		allFeatures.add("#sailing");
+		allFeatures.add("#magicbeing");
+
+		int orig = 1;
+		boolean hasSlaves = false;
+		boolean hasAnimals = false;
+		
+		if(r.nextBoolean())
+		{
+			orig++;
+			allFeatures.add("#holy");
+		}
+		
+		// Check to see if #secondaryracecommand is going to add #magicbeing, etc. to secondary race troops when they're finalized
+		
+		//List<Command> all = new ArrayList<Command>();
+		boolean secondaryMagicBeings = false;
+		boolean secondaryDemons = false;
+		boolean secondaryUndead = false;
+		boolean secondarySlaves = false;
+		boolean secondaryAnimals = false;
+		
+		List<Command> commands = nation.races.get(0).tags.getAllCommands("secondaryracecommand");
+		commands.addAll(nation.races.get(0).tags.getAllCommands("secondaryracecommand_conditional"));
+		
+		for(Command c : commands)
+		{
+			secondaryMagicBeings = (c.command.equals("#magicbeing") || secondaryMagicBeings);
+			secondaryDemons = (c.command.equals("#demon") || secondaryDemons);
+			secondaryUndead = (c.command.equals("#undead") || (c.command.equals("#almostundead") || secondaryUndead));
+			secondarySlaves = (c.command.equals("#slave") || secondarySlaves);
+			secondaryAnimals = (c.command.equals("#animal") || secondaryAnimals);
+		}
+
+		
+		// Get all commands that at least one commander has to fulfill.
+		
+		int magicbeings = 0;
+		int demons = 0;
+		int undeadbeings = 0;
+		for(Unit u : possibleComs)
+		{
+			if(u.race.equals(nation.races.get(1)) && secondaryMagicBeings)
+			{
+				magicbeings++;
+				if(!features.contains("#magicbeing"))
+				{
+					features.add("#magicbeing");
+				}
+			}
+			if(u.race.equals(nation.races.get(1)) && secondaryDemons)
+			{
+				demons++;
+				if(!features.contains("#demon"))
+				{
+					features.add("#demon");
+				}
+			}
+			if((u.race.equals(nation.races.get(1)) && secondaryUndead))
+			{
+				undeadbeings++;
+				if(!features.contains("#undead"))
+				{
+					features.add("#undead");
+				}
+			}
+			
+			if(u.race.equals(nation.races.get(1)) && secondarySlaves)
+			{
+				hasSlaves = true;
+			}
+			if(u.race.equals(nation.races.get(1)) && secondaryAnimals)
+			{
+				hasAnimals = true;
+			}
+			
+			for(Command c : u.getCommands())
+			{
+				if(c.command.equals("#magicbeing") && !(u.race.equals(nation.races.get(1)) || secondaryMagicBeings))  // Make sure we don't double-count
+					magicbeings++;
+				if(c.command.equals("#demon") && !(u.race.equals(nation.races.get(1)) || secondaryDemons))  // Make sure we don't double-count
+					demons++;
+				if((c.command.equals("#undead") || c.command.equals("#almostundead")) && !(u.race.equals(nation.races.get(1)) || secondaryUndead))  // Make sure we don't double-count
+					undeadbeings++;
+				
+				if(c.command.equals("#slave") || (u.race.equals(nation.races.get(1)) && secondarySlaves))
+					hasSlaves = true;
+				if(c.command.equals("#animal") || (u.race.equals(nation.races.get(1)) && secondaryAnimals))
+					hasAnimals = true;
+				
+
+				
+				if(allFeatures.contains(c.command) && !features.contains(c.command))
+				{
+					features.add(c.command);
+				}
+			}
+		}
+
+
+		double magicshare = (double)magicbeings/(double)possibleComs.size();
+		double demonshare = (double)(demons)/(double)possibleComs.size();
+		double undeadshare = (double)(undeadbeings)/(double)possibleComs.size();
+		double demonuneadshare = (double)(demons+undeadbeings)/(double)possibleComs.size();
+
+		// Clear the list and add only infantry for first pass!
+		possibleComs.clear();
+		possibleComs.addAll(getListOfSuitableUnits("infantry"));
+		removeMontagUnits(possibleComs);
+		
+		
+		List<Unit> cantbes = this.getUnitsWithTag(possibleComs, "cannot_be_commander");
+		if(cantbes.size() < possibleComs.size())
+			possibleComs.removeAll(cantbes);
+		
+		List<Unit> shouldbes = this.getUnitsWithTag(possibleComs, "should_be_commander");
+		if(shouldbes.size() > 0)
+			possibleComs = shouldbes;
+		
+		
+		
+		// Add one random infantry com
+		if(getListOfSuitableUnits("infantry").size() > 0 && possibleComs.size() > 0)
+		{
+			Unit com = possibleComs.get(r.nextInt(possibleComs.size()));
+			tempComs.add(com);
+			possibleComs.remove(com);
+			
+			if(com != null)
+			{
+				for(Command c : com.getCommands())
+				{
+						if(allFeatures.contains(c.command))
+						{
+							features.remove(c.command);
+						}
+				}
+			}
+		}
+		else
+			orig++;
+		
+		
+		possibleComs.addAll(getListOfSuitableUnits("chariot"));
+		possibleComs.addAll(getListOfSuitableUnits("mounted"));
+		possibleComs.addAll(getListOfSuitableUnits("sacred"));
+		removeMontagUnits(possibleComs);
+		
+		int minimumcoms = orig;
+	
+		
+		possibleComs.removeAll(tempComs);
+		minimumcoms = Math.min(minimumcoms, possibleComs.size());
+		
+		
+		cantbes = this.getUnitsWithTag(possibleComs, "cannot_be_commander");
+		if(possibleComs.size() - cantbes.size() >= minimumcoms)
+			possibleComs.removeAll(cantbes);
+		
+
+		
+		int tries = 0;
+		while((minimumcoms > 0 || features.size() > 0) && tries < 200)
+		{			
+			tries++;
+			
+			List<Unit> temps = new ArrayList<>();
+			shouldbes = this.getUnitsWithTag(possibleComs, "should_be_commander");
+			if(shouldbes.size() >= 1)
+				temps.addAll(shouldbes);
+			else
+				temps.addAll(possibleComs);
+			
+			temps.removeAll(tempComs);
+			
+			Unit u = null;
+			
+			
+			if(features.size() > 0)
+			{
+				do
+				{
+					u = getUnitWith(features, allFeatures, temps);
+
+					if(u == null)
+					{
+
+						u = getUnitWith(features, allFeatures, possibleComs);
+
+						if(u == null)
+						{
+							features.clear();
+							break;
+						}
+					}
+					
+					
+					for(Command c : u.getCommands())
+					{
+							if(allFeatures.contains(c.command))
+							{
+								features.remove(c.command);
+							}
+					}
+				}
+				while(tempComs.contains(u));
+			}
+			else 
+			{
+				possibleComs.removeAll(getListOfSuitableUnits("sacred"));
+				if(possibleComs.size() > 0)
+					do
+					{
+						u = possibleComs.get(r.nextInt(possibleComs.size()));
+					} 
+					while(u == null || tempComs.contains(u) || (shouldReRoll(u, tempComs) && r.nextBoolean()));
+			}
+			
+			if(u != null)
+			{
+				minimumcoms--;
+				tempComs.add(u);
+			}
+			
+		}
+
+		List<Unit> coms = new ArrayList<>();
+		for(Unit u : tempComs)
+		{
+			//NamePart part = new NamePart();
+			//part.text = "Commander";
+			
+	
+			Unit unit = u.getCopy();
+			
+			// Remove montags
+			List<Command> toremove = new ArrayList<>();
+			for(Command c : unit.commands)
+			{
+				if(c.command.equals("#montag"))
+					toremove.add(c);
+			}
+			unit.commands.removeAll(toremove);
+
+			// Elitefy
+			process(unit);
+
+			
+			//unit.name.type = part;
+			//unit.commands.add(new Command("#gcost", "+20"));
+			coms.add(unit);
+			
+			// Add stuff to sacreds sometimes
+			boolean priest = false;
+			boolean stealthy = false;
+			for(Command c : unit.getCommands())
+			{
+				if(c.command.equals("#holy"))
+					priest = true;
+				if(c.command.equals("#stealthy"))
+					stealthy = true;
+			}
+			
+		
+			if(r.nextBoolean() && priest)
+				unit.commands.add(Command.parse("#magicskill 8 1"));
+			
+			if(priest && stealthy)
+			{
+				double rand = r.nextDouble();
+				if(rand < 0.03)
+				{
+					unit.commands.add(new Command("#assassin"));
+				}
+			}
+			
+
+		}
+		
+		tempComs.clear();
+		for(int i = coms.size() - 1; i >= 0; i--)
+			tempComs.add(coms.get(i));
+		
+		
+		tempComs = orderComs(tempComs);
+		
+		// Leadership!
+		
+		for(int i = 0; i < tempComs.size(); i++)
+		{
+			Unit com = tempComs.get(i);
+			
+			boolean magicbeing = false;
+			boolean demon = false;
+			boolean undead = false;
+			boolean slave = false;
+			boolean animal = false;
+			boolean undisciplined = false;
+			boolean mindless = false;
+			boolean good_leader = com.tags.containsName("#good_leader");
+			boolean superior_leader = com.tags.containsName("#superior_leader");
+			
+			for(Command c : com.getCommands())
+			{
+				if(c.command.equals("#magicbeing"))
+					magicbeing = true;
+				else if(c.command.equals("#demon"))
+					demon = true;
+				else if(c.command.equals("#undead") || c.command.equals("#almostundead"))
+					undead = true;
+				else if(c.command.equals("#slave"))
+					slave = true;
+				else if(c.command.equals("#animal"))
+					animal = true;
+				else if(c.command.equals("#undisciplined"))
+					undisciplined = true;
+				else if(c.command.equals("#mor") && c.args.get(0).getInt() == 50)
+					mindless = true;
+			}
+			
+
+			
+			// Mindless magical beings can be inspiring, but others cannot
+			if(magicbeing && mindless)
+			{
+				mindless = false;
+			}
+			
+			int power;
+			// Determine eventual base leadership level
+			double random = r.nextDouble();
+			if((random > 1 - 0.125 * i) 
+					|| (superior_leader && r.nextDouble() < 0.5))
+				power = 3;
+			else if((random > 0.25 - 0.05 * i) 
+					|| (superior_leader && r.nextDouble() < 0.75)
+					|| (good_leader && r.nextDouble() < 0.5))
+				power = 2;
+			else
+				power = 1;
+			
+			// Undisciplined troops are more likely to make for less talented commanders
+			if(power > 1 && undisciplined && r.nextDouble() < 0.5)
+				power -= 1;
+			
+			// Unless we see a reason not to, rec points will be 1
+			com.commands.add(Command.parse("#rpcost 1"));
+			
+			
+			// Are we or most of our troops "special" beings, and if so will we get better special leadership and/or worse normal?
+			int magicpower = power - (r.nextInt(1));
+			int undeadpower = power - (r.nextInt(1));
+			int demonpower = undeadpower;
+			int powerpenalty = 0;
+			if(magicshare > 0.66 || (undead && (undeadshare > 0.33)))
+			{
+				if(r.nextDouble() > 0.5) 
+				{
+					undeadpower = power++;
+					if(undead)
+						powerpenalty = r.nextInt(3);
+					else
+						powerpenalty = Math.min(0, (r.nextInt(3) - 1));
+				}
+					
+			}
+			if(magicshare > 0.8 || (magicbeing && (magicshare > 0.4)))
+			{
+				if(r.nextDouble() > 0.5) 
+				{
+					magicpower = power++;
+					if(powerpenalty == 0 && magicbeing)
+						powerpenalty = Math.min(0, r.nextInt(4) - 1);
+					else if(powerpenalty == 0)
+						powerpenalty = Math.min(0, (r.nextInt(3) - 1));
+				}
+					
+			}
+			if(demonshare > 0.8 || (demon && (demonshare > 0.4)))
+			{
+				if(r.nextDouble() > 0.5) 
+				{
+					demonpower = power++;
+					if(powerpenalty == 0 && demon)
+						powerpenalty = Math.min(0, r.nextInt(5) - 3);
+					else if(powerpenalty == 0)
+						powerpenalty = Math.min(0, (r.nextInt(3) - 1));
+				}
+					
+			}			
+			
+			
+			if((i == 0 || r.nextDouble() < 0.2) && hasSlaves)
+			{
+				com.commands.add(Command.args("#taskmaster", "+1"));
+				com.commands.add(Command.args("#gcost", "+5"));
+			}
+			
+			if(com.caponly && r.nextDouble() > 0.5)
+				com.caponly = false;
+			
+			com.commands.add(Command.args("#gcost", "+30"));
+
+
+			// Expertleader
+			if(power == 3)
+			{
+				com.commands.add(Command.args("#gcost", "+50"));
+				com.commands.add(Command.args("#expertleader"));
+				
+				if(powerpenalty == 2)
+				{
+					com.commands.add(Command.args("#command", "-80"));
+					com.commands.add(Command.args("#gcost", "-40"));
+				}
+				else if(powerpenalty == 1)
+				{
+					com.commands.add(Command.args("#command", "-40"));
+					com.commands.add(Command.args("#gcost", "-20"));
+				}
+				else
+					com.commands.add(Command.args("#rpcost", "2"));
+				
+				if(r.nextDouble() > 0.5 && !mindless)
+				{
+					com.commands.add(Command.args("#inspirational", "+1"));
+					com.commands.add(Command.args("#gcost", "+10"));
+				}
+			
+				if(r.nextDouble() > 0.75 && !mindless)
+				{
+					com.commands.add(Command.args("#inspirational", "+1"));
+					com.commands.add(Command.args("#gcost", "+10"));
+				}
+				
+				if((r.nextDouble() < 0.25 && hasSlaves) || (slave && !mindless))
+				{
+					if(slave && !mindless)
+					{
+						int amount = Math.min(0, (r.nextInt(4) - 1));
+						if(amount > 0)
+						{
+							com.commands.add(Command.args("#taskmaster", "+" + amount));
+							com.commands.add(Command.args("#gcost", "+" + (amount * 5)));
+							
+							amount = r.nextInt(amount + 1);
+							if(amount > 0)
+							{
+								com.commands.add(Command.args("#inspirational", "-" + amount));
+								com.commands.add(Command.args("#gcost", "-" + (amount * 10)));
+							}
+							
+						}
+					}
+					else
+					{
+						int amount = r.nextInt(2);
+						com.commands.add(Command.args("#taskmaster", "+" + (amount + 1)));
+						com.commands.add(Command.args("#gcost", "+" + (amount * 5)));
+					}
+				}
+				
+				if((r.nextDouble() < 0.25 && hasAnimals) || (animal && !mindless))
+				{
+					if(animal && !mindless)
+					{
+						int amount = Math.min(0, (r.nextInt(6) - 2));
+						if(amount > 0)
+						{
+							com.commands.add(Command.args("#beastmaster", "+" + amount));
+							com.commands.add(Command.args("#gcost", "+" + (amount * 5)));
+							
+							amount = r.nextInt(amount + 1);
+							
+							if(amount > 0)
+							{
+								com.commands.add(Command.args("#inspirational", "-" + amount));
+								com.commands.add(Command.args("#gcost", "-" + (amount * 10)));
+							}
+						}
+					}
+					else
+					{
+						int amount = r.nextInt(2) + 1;
+						com.commands.add(Command.args("#beastmaster", "+" +amount));
+						com.commands.add(Command.args("#gcost", "+" + (amount * 5)));
+					}
+					
+				}
+				
+		
+				
+			}
+			// Goodleader
+			else if(power == 2)
+			{						
+				if(powerpenalty == 2)
+				{
+					com.commands.add(Command.args("#goodleader"));
+					com.commands.add(Command.args("#command", "-70"));
+				}
+				else if(powerpenalty == 1)
+				{
+					com.commands.add(Command.args("#goodleader"));
+					com.commands.add(Command.args("#command", "-40"));
+					com.commands.add(Command.args("#gcost", "+10"));
+				}
+				else if((animal || mindless || slave) && r.nextDouble() > 0.25)
+				{
+					com.commands.add(Command.args("#okleader"));
+					com.commands.add(Command.args("#command", "+40"));
+					com.commands.add(Command.args("#gcost", "+10"));
+				}
+				else
+				{
+					com.commands.add(Command.args("#goodleader"));
+					com.commands.add(Command.args("#gcost", "+20"));
+				}
+				
+				if(r.nextDouble() > 0.65 && !mindless)
+				{
+					com.commands.add(Command.args("#inspirational", "+1"));
+					com.commands.add(Command.args("#gcost", "+10"));
+				}
+				if(r.nextDouble() > 0.85)
+				{
+					com.commands.add(Command.args("#inspirational", "+1"));
+					com.commands.add(Command.args("#gcost", "+10"));
+				}
+				
+				if(r.nextDouble() < 0.5 && hasSlaves)
+				{
+					int amount = r.nextInt(2) + 1;
+					com.commands.add(Command.args("#taskmaster", "+" + amount));
+					com.commands.add(Command.args("#gcost", "+" + (amount * 5)));
+					
+					amount = r.nextInt(amount + 1);
+					if(amount > 0)
+					{
+						com.commands.add(Command.args("#inspirational", "-" + amount));
+						com.commands.add(Command.args("#gcost", "-" + (amount * 10)));
+					}
+				}
+				
+				if((r.nextDouble() < 0.125 && hasAnimals) || (animal && !mindless))
+				{
+					if(animal && !mindless)
+					{
+						int amount = Math.min(0, (r.nextInt(4) - 1));
+						if(amount > 0)
+						{
+							com.commands.add(Command.args("#beastmaster", "+" + amount));
+							com.commands.add(Command.args("#gcost", "+" + (amount * 5)));
+							
+							amount = r.nextInt(amount + 1);
+							
+							if(amount > 0)
+							{
+								com.commands.add(Command.args("#inspirational", "-" + amount));
+								com.commands.add(Command.args("#gcost", "-" + (amount * 10)));
+							}
+							
+						}
+					}
+					else
+					{
+						int amount = r.nextInt(1) + 1;
+						com.commands.add(Command.args("#beastmaster", "+" +amount));
+						com.commands.add(Command.args("#gcost", "+" + (amount * 5)));
+					}
+					
+				}
+			}
+			// Okleader
+			else // if(power == 1)
+			{
+				com.commands.add(new Command("#okleader"));
+				
+				if(powerpenalty > 0)
+				{
+					com.commands.add(Command.args("#command", "-30"));
+					com.commands.add(Command.args("#gcost", "-10"));
+				}
+
+				if(r.nextDouble() > 0.75 && !mindless)
+				{
+					com.commands.add(Command.args("#inspirational", "+1"));
+					com.commands.add(Command.args("#gcost", "+10"));
+				}
+				if(r.nextDouble() > 0.5)
+				{
+					com.commands.add(Command.args("#command", "+20"));
+					if(r.nextDouble() > 0.875)
+					{
+						com.commands.add(Command.args("#command", "+20"));
+						com.commands.add(Command.args("#gcost", "+10"));
+					}
+				}
+				
+				if(r.nextDouble() < 0.25 && hasSlaves)
+				{
+					int amount = r.nextInt(2) + 1;
+					com.commands.add(Command.args("#taskmaster", "+" + amount));
+					com.commands.add(Command.args("#gcost", "+" + (amount * 5)));
+					
+					amount = r.nextInt(amount + 1);
+					if(amount > 0)
+					{
+						com.commands.add(Command.args("#inspirational", "-" + amount));
+						com.commands.add(Command.args("#gcost", "-" + (amount * 10)));
+					}
+				}
+				
+				if((r.nextDouble() < 0.125 && (hasAnimals || (animal && !mindless))))
+				{
+
+					int amount = Math.min(0, (r.nextInt(5) - 2));
+					if(amount > 0)
+					{
+						com.commands.add(Command.args("#beastmaster", "+" + amount));
+						com.commands.add(Command.args("#gcost", "+" + (amount * 5)));
+									
+						amount = r.nextInt(amount + 1);
+						if(amount > 0)
+						{
+							com.commands.add(Command.args("#inspirational", "-" + amount));
+							com.commands.add(Command.args("#gcost", "-" + (amount * 10)));
+						}
+						
+					}
+				}
+			}
+			
+			// Magic leadership
+			assignMagicUDLeadership(com, magicpower, magicbeing, magicshare, "magic");
+			assignMagicUDLeadership(com, Math.max(demonpower, undeadpower), (demon || undead), demonuneadshare, "undead");
+			
+			generateDescription(com, magicbeing, (demon || undead), hasSlaves);  // Kludge to provide basic madlib commander descriptions
+
+		}
+		
+		colony.comlists.computeIfAbsent("commanders", k -> new ArrayList<>()).addAll(tempComs);
+		
+		chandler = null;
+		unitGen = null;
+	}
 
 	private void assignMagicUDLeadership(Unit com, int power, boolean being, double magicshare, String str)
 	{

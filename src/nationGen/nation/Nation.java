@@ -490,6 +490,11 @@ public class Nation {
 		// Commanders
 		CommanderGenerator comgen = new CommanderGenerator(nationGen, this, assets);
 		comgen.generateComs();
+		for (Colony col:colonies)
+		{
+			comgen.generateColonialComs(col);
+			comlists.get("commanders").addAll(col.comlists.get("commanders"));
+		}
 		comgen = null;
 		System.gc();
 	}

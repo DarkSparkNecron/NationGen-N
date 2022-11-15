@@ -1,9 +1,12 @@
 package nationGen.entities;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Map.Entry;
+import java.util.stream.Stream;
 
 import nationGen.NationGen;
 import nationGen.NationGenAssets;
@@ -52,5 +55,22 @@ public class Colony {
 	public void doThing()
 	{
 		colGen.makeTroops();
+	}
+	private static <T> Stream<T> flatten(Map<?, ? extends Collection<T>> map) {
+		return map.values().stream().flatMap(Collection::stream);
+	}
+	private static <T> Stream<T> flattenListsWithPrefix(Map<String, ? extends Collection<T>> map, String prefix) {
+		return map.entrySet().stream()
+				.filter(e -> e.getKey().startsWith(prefix))
+				.map(Entry::getValue)
+				.flatMap(Collection::stream);
+	}
+	public Stream<Unit> selectTroops()
+	{
+		return flatten(unitlists);
+	}
+	public Stream<Unit> selectTroops(String type)
+	{
+		return flattenListsWithPrefix(unitlists, type);
 	}
 }
