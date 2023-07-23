@@ -34,8 +34,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class NationGen
 {
-	public static String version = "0.8.0-DEV2";
-	public static String date = "20th of September 2022";
+	public static String version = "0.8.0-DEV2 (Master)";
+	public static String date = "23th of July 2023";
 	
 	private List<NationRestriction> restrictions;
 	
@@ -329,22 +329,35 @@ public class NationGen
 				{
 				String mtg = s.name;	
 				Boolean match=false;
+				//it turns out site must have max of 35 symbols name. "PRVN: " is 6, tag is 2+5 usually
 				for(List<Unit> lu : n.unitlists.values())
 				{
 					for(Unit nu : lu)
 						if(nu.tags.containsName("montagunit") && nu.tags.contains("mptag", mtg))
 						{
-							s.name="PRVW: "+nu.getName()+", "+nu.getStringCommandValue("#firstshape", ""); //displaying montag to prevent sites overlapping
+							String mtag = ", "+nu.getStringCommandValue("#firstshape", ""); //displaying montag to prevent sites overlapping
+							String mname = nu.getName();
+							if(mname.length() >= 35-mtag.length()-5)
+							{
+								mname=mname.substring(0, 35-mtag.length()-5);
+							}
+							s.name="PRV: "+mname+mtag;
 							match=true;
 						}
 				}
 				if(match==false)
-					for(List<Unit> lu : n.comlists.values())
+					for(List<Unit> lu : n.comlists.values()) //if this montag isnt in units it should be in comms
 					{
 						for(Unit nu : lu)
 							if(nu.tags.containsName("montagunit") && nu.tags.contains("mptag", mtg))
 							{
-								s.name="PRVW: "+nu.getName()+", "+nu.getStringCommandValue("#firstshape", "");
+								String mtag = ", "+nu.getStringCommandValue("#firstshape", "");
+								String mname = nu.getName();
+								if(mname.length() >= 35-mtag.length()-5)
+								{
+									mname=mname.substring(0, 35-mtag.length()-5);
+								}
+								s.name="PRV: "+mname+mtag;
 								match=true;
 							}
 					}

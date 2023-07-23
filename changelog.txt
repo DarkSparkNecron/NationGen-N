@@ -15,6 +15,8 @@ Content
 - Naga basic units got RPcost cheaper to 10000 from 20000, as they are main population and shouldnt be treated like rare sacreds of patala. (Same reason as for illhybrids)
 - Atlantian standard bearers now separated class from regular infantry and has limit of one unit, so frog flags are down. Atlantian standards is also a weapon now, so no more handfight.
 - Added hands and claws as a primitive-themed weapons for atlantians as honor for the loss of a useless flag parade.
+- Dirge Slave bug fixed. Thanks djmcgill
+
 
 =============================
 0.8.0-DEV1 (20th August 2022)

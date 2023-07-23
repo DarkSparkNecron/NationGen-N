@@ -8,13 +8,16 @@ ToDo List (for 0.8.0 release, future for future php):
 future) do the same thing to nagas as to illhybrids ---Done
 future) fix atlantian flag bearers by making new role or just look at imperial humans for how it should be done ---Done
 future) also separate mutated crabs into different role
+5)do something with horses being too expensive
+future) solve problem of atlantian sacreds having bare standard sometimes? Flag parade is still here
 
 -------------------- Code
 1)remove magic:acces button (or at least check what it do) --Done. problem was already fixed for 0.7.13
 2)update nation descriptions and version to NG-N --Done
 3)themes should be written in nat descr --Done
 future)Extract color used for troops and put it somewhere in DM sebug section at least, or even use in scoregraphs
-
+4) Fix montag units descriptions to not be empty at least + add montag number in it, instead of preview site. It needs free symbols badly
+future) description for supplicants
 -------------------- Mixed (Hardest)
 1)add PREVIEW sites for montag units (foulspawns) --Done
 2)sacred power slider now will do something --Done (thnks geepope)
