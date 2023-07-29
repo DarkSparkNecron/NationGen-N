@@ -34,8 +34,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class NationGen
 {
-	public static String version = "0.8.0-DEV2 (Master)";
-	public static String date = "23th of July 2023";
+	public static String version = "0.8.0-DEV2";
+	public static String date = "29th of July 2023";
 	
 	private List<NationRestriction> restrictions;
 	
@@ -244,6 +244,8 @@ public class NationGen
 		if(restrictions.size() > 0)
 		{
 			System.out.println("Total nations that did not pass restrictions: " + String.valueOf(totalfailed));
+			System.out.println("Average amount of tries per nation: " + String.valueOf(totalfailed/generatedNations.size()));
+			//System.out.println((generatedNations.size() + 1));
 		}
 		
 		System.out.print("Giving ids");
@@ -392,9 +394,13 @@ public class NationGen
 		
 		this.write(generatedNations);
 		
+		int GNSize = generatedNations.size(); //since through code it appears this thing can be 0 sometimes. at least for some reason it requires +1 where succesful nations are told
+		if(GNSize == 0) GNSize++;
 		Instant end = Instant.now();
 		Duration timeElapsed = Duration.between(start, end);
+		Duration avgtime = timeElapsed.dividedBy(GNSize);
 		System.out.println("Finished generation in " + timeElapsed.toMinutes() + " minutes and " + timeElapsed.toSecondsPart() + " seconds.");
+		System.out.println("Average generation time for one nation is " + avgtime.toMinutes() + " minutes and " + avgtime.toSecondsPart() + " seconds.");
 		modname = "";
 		
 	}

@@ -158,3 +158,29 @@
 #power 3
 #filterdesc "regeneration desc"
 #end
+
+#new magefilter
+#name "invisible"
+#type "strongdefence"
+#basechance 0.1
+#command "#invisible"
+#command "#gcost *1.2"
+#command "#spiritsight"
+#primarycommand #ethereal
+#power 4
+#filterdesc "invisible desc"
+#end
+
+#new magefilter
+#name "invisible2"
+#type "strongdefence"
+#basechance 0.33
+#command "#invisible"
+#command "#gcost *1.2"
+#command "#spiritsight"
+#primarycommand #ethereal
+#tag "notfortier 2"
+#tag "notfortier 1"
+#power 4
+#filterdesc "invisible desc"
+#end

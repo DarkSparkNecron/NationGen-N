@@ -1117,3 +1117,19 @@
 #command "#startaff +20"
 #filterdesc "cultist desc"
 #end
+
+#new
+#name "invisible"
+#type "strong defensive"
+#primarycommand "#invisible"
+#command "#invisible"
+#command "#gcost +30"
+#command "#spiritsight"
+#price_per_command #hp 1 10
+#basechance 0.05
+#chanceinc "pose mounted *0.25"
+#chanceinc "pose chariot *0.1"
+#themeinc thisarmorprot 18 *0.125
+#power 3
+#filterdesc "invisible desc"
+#end

@@ -2499,3 +2499,15 @@
 #prev "shapeshift start"
 #uniquedescription
 #end
+
+#new
+#name "invisible desc"
+#synonym "invisibility"
+#synonym "the ability to never be seen"
+#synonym "the power to fall of perception"
+#synonym "ethereal forms"
+#extendeddescription "and only those with ability to see spirits can detect %pronoun_obj%"
+#set "wondrous"
+#prev "wondrous desc"
+#bridge "wondrous bridge"
+#end

@@ -1570,15 +1570,149 @@ public class Unit {
 	 */
 	protected Optional<String> writeRecpointsLine()
 	{
-		if(this.hasCommand("#rpcost") || this.hasCommand("#copystats"))
+		if(this.hasCommand("#copystats"))
+			{
+				//System.out.println("mount0: copystat");
+				return Optional.empty();
+			}
+		
+		if(this.hasCommand("#rpcost"))
+		{
+			/*boolean no = false;
+			if(no) //this.isMounted(). disabled part due to it causing generated commanders to have 0rp
+			{
+				List<Command> clist = new ArrayList<>();
+				
+				clist.addAll(this.race.unitcommands);
+				clist.addAll(this.pose.getCommands());
+				if(this.getSlot("basesprite") != null)
+					clist.addAll(this.getSlot("basesprite").commands);
+				
+				boolean isSacr = false;
+				int rp = getCommandValue("#rpcost", 10000) / 1000;
+				
+				for(Command c : clist)
+				{
+					if(c.command.equals("#holy"))
+					{
+						isSacr = true;
+						break;
+					}
+				}
+				if(isSacr)
+				{
+					rp=rp-(rp%10); //10% reduction
+				}else
+				{
+					rp=rp-(rp%5); //20% reduction
+				}
+				String temp = Integer.toString(rp*1000);
+				System.out.println("mount1: "+temp);
+				this.setCommandValue("#rpcost", temp);
+			}*/
+			/*boolean t1=false;
+			for(Command c : this.pose.commands)
+				if(c.command.equals("#rpcost"))
+				{
+					t1=true;
+					this.pose.commands.set
+				}*/
+			if(this.isMounted())
+				{
+				this.setCommandValue("#rpcost", Integer.toString(-1*this.calculateRp()));	
+				}
 			return Optional.empty();
+		}
 		
-		
-		return Optional.of("#rpcost " + (calculateRp() * 1000));
+		//if no rpcost was set
+		int crp = this.calculateRp();
+		if(crp>=0)
+			return Optional.of("#rpcost " + (crp * 1000)); 
+		else
+			return Optional.of("#rpcost " + (crp * -1));
 	}
 	
-	private int calculateRp() {
+	private int calculateRp() { //RP calculation based on gcost
 		int baserp = 0;
+		//boolean isCav = this.isMounted();
+		//boolean isSacr = false;
+		
+		List<Command> clist = new ArrayList<>();
+		clist.addAll(this.race.unitcommands);
+		clist.addAll(this.pose.getCommands());
+		
+		if(this.getSlot("basesprite") != null)
+			clist.addAll(this.getSlot("basesprite").commands);
+		/*
+		for(Command c : clist)
+		{
+			if(c.command.equals("#gcost"))
+			{
+				baserp = handleModifier(c.args.get(0), baserp);
+			}
+			if(c.command.equals("#mounted"))
+			{
+				isCav = true;
+			}
+			if(c.command.equals("#holy"))
+			{
+				isSacr = true;
+			}
+		}*/
+		//if(isCav)
+		if(this.isMounted())
+		{
+			/*int a=0;
+			int b=0;
+			if(isSacr)
+			{
+				b=(baserp/3); //was 10
+				baserp-=(baserp/3); //10% reduction. made to 33% due to no results
+				a=-1*baserp;
+			}else
+			{
+				b=-1*(baserp/2); //was 5
+				baserp-=(baserp/2); //20% reduction. made to 50% due to no results
+				a=baserp;
+			}
+			baserp=1;
+			System.out.println("mount2: "+baserp*1000+" a="+a+" b="+b); */
+			baserp=-1*this.customMountedRPCost(); //minus is speial here as it says "here were used custom RP system, dont *1000"
+		} else
+		{
+			for(Command c : clist)
+				if(c.command.equals("#gcost"))
+				{
+					baserp = handleModifier(c.args.get(0), baserp);
+					break;
+				}
+		}
+		return baserp;
+	}
+	
+	public boolean isMounted() //probably the most efficient way of saying it?...
+	{
+		boolean isCav = false;
+		
+		if(!isCav) //Slight performance improvement
+		for(String role : this.pose.roles) //this makes it only worse but whatever i need to detect mounted somehow
+			if (role.contains("mounted")||role.contains("chariot")) {
+				isCav=true;
+				break;
+			}
+		return isCav;
+	}
+	
+	public int customMountedRPCost() //custom cost calc for cav since in basic game its always 46 even for trash
+	{
+		int cost=32; //32 - basic, 38 elite/sacred, 42 - sacred elite, 42+ for glamour, size etc
+		int bonus =0;
+		
+		for(String role : this.pose.roles) 
+			if (role.contains("elite")) //||role.contains("sacred")
+			{
+				cost+=6;
+			}
 		
 		List<Command> clist = new ArrayList<>();
 		clist.addAll(this.race.unitcommands);
@@ -1589,13 +1723,43 @@ public class Unit {
 		
 		for(Command c : clist)
 		{
-			if(c.command.equals("#gcost"))
+			if(c.command.equals("#holy"))
 			{
-				baserp = handleModifier(c.args.get(0), baserp);
+				cost+=6; //some units have sacred role, but not holy
+			}
+			if(c.command.equals("#ethereal"))
+			{
+				bonus++;
+			}
+			if(c.command.equals("#illusion")) //glamour
+			{
+				bonus++;
+			}
+			if(c.command.equals("#invisible"))
+			{
+				bonus++;
+			}
+			if(c.command.equals("#flying"))
+			{
+				bonus++;
+			}
+			if(c.command.equals("#trample")) //chariot role?
+			{
+				bonus++;
+			}
+			if(c.command.equals("#slave"))
+			{
+				bonus--;
+			}
+			if(c.command.equals("#undisciplined"))
+			{
+				bonus--;
 			}
 		}
 		
-		return baserp;
+		bonus+= getCommandValue("#size", 0)-3; //btw this makes small cav cheaper
+		
+		return cost+bonus*4;
 	}
 	
 	private List<String> writeCommandLines()
@@ -1634,7 +1798,6 @@ public class Unit {
 		// The super awesome attack sprite generation:
 		FileUtil.writeTGA(this.render(-5), "/mods/" + spritedir + "/unit_" + this.id + "_b.tga");
 	}
-	
 	
 	public BufferedImage render()
 	{

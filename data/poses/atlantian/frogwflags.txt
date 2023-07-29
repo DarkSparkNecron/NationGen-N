@@ -3,8 +3,8 @@
 #newpose
 #name "normal standard"
 #role "infantry"
----maxunits 1
----maxvarieties 1
+#maxunits 1
+#maxvarieties 1
 #load basesprite /data/items/atlantian/atlantianbases.txt
 #load shadow /data/items/atlantian/shadow.txt
 #load armor /data/items/atlantian/armor.txt
@@ -21,10 +21,10 @@
 #newpose
 #name "ice standard"
 #role "infantry"
-#role "sacred"
-#sacred
----maxunits 1
----maxvarieties 1
+---role "sacred"
+---sacred
+#maxunits 1
+#maxvarieties 1
 #load basesprite /data/items/atlantian/atlantianbases.txt
 #load shadow /data/items/atlantian/shadow.txt
 #load armor /data/items/atlantian/icearmor.txt
@@ -41,8 +41,9 @@
 #newpose
 #name "shambler standard"
 #role "infantry"
----maxunits 1
----maxvarieties 1
+#maxunits 1
+#maxvarieties 1
+#basechance 0.5
 #subrace "shambler"
 #subraceprefix "shambler"
 #load basesprite /data/items/atlantian/shamblerbases.txt

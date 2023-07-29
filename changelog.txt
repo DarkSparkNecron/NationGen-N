@@ -1,5 +1,5 @@
 ﻿
-0.8.0-DEV2 (14th of September 2022)
+0.8.0-DEV2 (28th of July 2023)
 ----------------------------------------------------------
 Note: DEV test versions have separate log, showing changes from one test to other. Release will contain all the changes
 
@@ -7,16 +7,19 @@ Code
 ----------------------------------------------------------
 - Program now generates preview sites for every montag unit and commander
 - Support for terrain recruitment. Via unit "specrec" tag and its args. (see some docs or commit descr)
+- Program now shows average amount of fails and average generation time for one nation
+- RP cost section in unit.java is now kinda messed, but now provides custom cost for mounted units
 
 Content
 -----------------------------------------------------------
 - Wolf, ghost, ghoul, imp summoning sites made 6 times more powerful (summon 6 monsters instead of 1)
 - Added elemental summoning sites which summons 3 small elementals at a time, and one that summons 4 different small elementals
 - Naga basic units got RPcost cheaper to 10000 from 20000, as they are main population and shouldnt be treated like rare sacreds of patala. (Same reason as for illhybrids)
-- Atlantian standard bearers now separated class from regular infantry and has limit of one unit, so frog flags are down. Atlantian standards is also a weapon now, so no more handfight.
+- Atlantian standard bearers now separated class from regular infantry and has limit of one unit, so frog flags are down. Atlantian standards is also a weapon now, so no more handfight. Also, they can no longer be sacreds
 - Added hands and claws as a primitive-themed weapons for atlantians as honor for the loss of a useless flag parade.
 - Dirge Slave bug fixed. Thanks djmcgill
-
+- Added really sus Invisible unit filter for sacreds and mages
+- Expect reduction in rp cost of cavalry. Cost now depends on it's desired role, unit size and some traits such as slave or ethereal
 
 =============================
 0.8.0-DEV1 (20th August 2022)
