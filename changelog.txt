@@ -1,5 +1,5 @@
 ﻿
-0.8.0-DEV2 (28th of July 2023)
+0.8.0-DEV2 (29th of July 2023)
 ----------------------------------------------------------
 Note: DEV test versions have separate log, showing changes from one test to other. Release will contain all the changes
 
@@ -7,6 +7,7 @@ Code
 ----------------------------------------------------------
 - Program now generates preview sites for every montag unit and commander
 - Support for terrain recruitment. Via unit "specrec" tag and its args. (see some docs or commit descr)
+- As i opened this project as git in eclipse i found new stuff. So project is renamed to Nationgen-N (from 0.5.0.09E whatever) and JavaSE-18 removed from classpath
 - Program now shows average amount of fails and average generation time for one nation
 - RP cost section in unit.java is now kinda messed, but now provides custom cost for mounted units
 

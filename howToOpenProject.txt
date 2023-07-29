@@ -35,3 +35,5 @@ leaving you with "target folder". there're some useful thing but you need to go 
 here will be a folder with compiled natgen. ready to release.
 
 if it fails with message that some scary folder doesnt have jmods folder, check pom.xml to put into release-all.bat path to JDK 11.0.2 (i put one into the project) in JAVA_PATH argument
+=========================
+BTW i found a better way. Just get the eclipse and import this project as git. You find out how this works. Because of that you probably doesnt need to suffer from JDK as it downloads itself.
