@@ -1,5 +1,5 @@
 ﻿
-0.8.0-DEV2 (29th of July 2023)
+0.8.0-DEV2 (31th of July 2023)
 ----------------------------------------------------------
 Note: DEV test versions have separate log, showing changes from one test to other. Release will contain all the changes
 
@@ -22,6 +22,7 @@ Content
 - Dirge Slave bug fixed. Thanks djmcgill
 - Added really sus Invisible unit filter for sacreds and mages
 - Expect reduction in rp cost of cavalry. Cost now depends on it's desired role, unit size and some traits such as slave or ethereal
+
 
 =============================
 0.8.0-DEV1 (20th August 2022)

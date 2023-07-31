@@ -1525,6 +1525,7 @@ public class Unit {
 			.forEach(i -> lines.add(writeSlotLine(i)));
 		
 		lines.add("#end");
+		//lines.add("--- Generation debug tags: " + this.tags);
 		lines.add("");
 		
 		return lines;
@@ -1561,6 +1562,7 @@ public class Unit {
 			if(cmd.command.equals(command))
 			{
 				cmd.args.set(0, new Arg(newValue));
+				break;
 			}
 		}
 	}
@@ -1617,19 +1619,17 @@ public class Unit {
 					t1=true;
 					this.pose.commands.set
 				}*/
+			this.tags.addName("hasRPCost");
 			if(this.isMounted())
 				{
-				this.setCommandValue("#rpcost", Integer.toString(-1*this.calculateRp()));	
+				this.setCommandValue("#rpcost", Integer.toString(this.customMountedRPCost()));	
+				//this.tags.add("RPCostSet",Integer.toString(this.customMountedRPCost()));
 				}
 			return Optional.empty();
 		}
 		
 		//if no rpcost was set
-		int crp = this.calculateRp();
-		if(crp>=0)
-			return Optional.of("#rpcost " + (crp * 1000)); 
-		else
-			return Optional.of("#rpcost " + (crp * -1));
+			return Optional.of("#rpcost " + this.calculateRp());
 	}
 	
 	private int calculateRp() { //RP calculation based on gcost
@@ -1677,29 +1677,42 @@ public class Unit {
 			}
 			baserp=1;
 			System.out.println("mount2: "+baserp*1000+" a="+a+" b="+b); */
-			baserp=-1*this.customMountedRPCost(); //minus is speial here as it says "here were used custom RP system, dont *1000"
-		} else
+			baserp=this.customMountedRPCost(); //minus is speial here as it says "here were used custom RP system, dont *1000"
+		} 
+		else
 		{
 			for(Command c : clist)
 				if(c.command.equals("#gcost"))
 				{
-					baserp = handleModifier(c.args.get(0), baserp);
+					baserp = handleModifier(c.args.get(0), baserp) * 1000;
 					break;
 				}
 		}
 		return baserp;
 	}
 	
+	//mounted\chariot detection. Seems to no work sometimes
 	public boolean isMounted() //probably the most efficient way of saying it?...
 	{
 		boolean isCav = false;
 		
-		if(!isCav) //Slight performance improvement
 		for(String role : this.pose.roles) //this makes it only worse but whatever i need to detect mounted somehow
 			if (role.contains("mounted")||role.contains("chariot")) {
 				isCav=true;
+				/*if(role.contains("chariot"))
+					{
+						System.out.println("chariot");
+						this.tags.addName("IsChariotRole");
+					}*/
 				break;
 			}
+		/*if(this.appliedFilters.contains("Chariot unit"))
+			{
+				isCav=true; //sometimes filters are only place where its said about mountedness?..
+				System.out.println("chariot filter");
+				this.tags.addName("IsChariot");
+			}
+		this.tags.addName("IsMounted");*/
 		return isCav;
 	}
 	
@@ -1707,11 +1720,14 @@ public class Unit {
 	{
 		int cost=32; //32 - basic, 38 elite/sacred, 42 - sacred elite, 42+ for glamour, size etc
 		int bonus =0;
+		boolean isSacr=false;
+		boolean isSpec=false; //is this undead\demon\MB. This thing made to detect nadyr and dustwalkers
 		
 		for(String role : this.pose.roles) 
 			if (role.contains("elite")) //||role.contains("sacred")
 			{
 				cost+=6;
+				break;
 			}
 		
 		List<Command> clist = new ArrayList<>();
@@ -1721,11 +1737,26 @@ public class Unit {
 		if(this.getSlot("basesprite") != null)
 			clist.addAll(this.getSlot("basesprite").commands);
 		
+		/*for(Filter f : this.appliedFilters)
+			for(Command c : f.getCommands())
+			if(c.command.equals("sacred")||c.command.equals("Mounted sacred"))
+			{
+				isSacr=true;
+				System.out.println(" filter");
+				break;
+			}*/
+		if(this.tags.containsName("sacred")) //Only sacred detection i was able to make lol
+		{
+			isSacr=true;
+			//System.out.println("Sacr by tags");
+		}
+		
 		for(Command c : clist)
 		{
-			if(c.command.equals("#holy"))
+			if(c.command.equals("#holy")) //this thing seems like to be never triggered
 			{
-				cost+=6; //some units have sacred role, but not holy
+				isSacr=true; //some units have sacred role, but not holy
+				//System.out.println("holy");
 			}
 			if(c.command.equals("#ethereal"))
 			{
@@ -1755,10 +1786,27 @@ public class Unit {
 			{
 				bonus--;
 			}
+			//need to add something to detect dustwalkers and other lolchs
+			if(c.command.equals("#undead"))
+			{
+				isSpec=true;
+			}
+			if(c.command.equals("#cold")&&isSpec)
+			{
+				bonus+=3;
+			}
+			if(c.command.equals("#heat")&&isSpec)
+			{
+				bonus+=3;
+			}
 		}
-		
+		if(isSacr)
+			{
+				cost+=6;
+				//System.out.println("sacr");
+			}
 		bonus+= getCommandValue("#size", 0)-3; //btw this makes small cav cheaper
-		
+		//this.tags.add("CustomCost: ", cost+bonus*4);
 		return cost+bonus*4;
 	}
 	

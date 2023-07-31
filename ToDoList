@@ -22,6 +22,7 @@ future)Extract color used for troops and put it somewhere in DM sebug section at
 future) description for supplicants
 future) i pretty much messed in claculateRP in unit.java so for better performance it should be tweaked. mount1 section returns 0s for unknown reason. Check for chariot role and oversee custom cost gen
 ie probably redo this thing. Check if it affects cost of high-ranked commanders (they should have 2rp, but have 1)
+5)remove comments from custop cavalry rp cost generation. or just cancel it and adjust cavalry bases rpcost manually
 
 -------------------- Mixed (Hardest)
 1)add PREVIEW sites for montag units (foulspawns) --Done
