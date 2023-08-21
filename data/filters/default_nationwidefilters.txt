@@ -326,20 +326,21 @@
 #chance 0.00625
 #primarycommand "#stonebeing"
 #command "#stonebeing"
+#command "#ap -2"
+#command "#prot +2"
+#filterdesc "golem desc"
+#end
+
+#new
+#name "golem_hard"
+#chance 0.00625
+#primarycommand "#stonebeing"
+#command "#stonebeing"
 #command "#ap -4"
 #command "#prot +4"
 #filterdesc "golem desc"
 #end
 
-#new
-#name "golem"
-#chance 0.00625
-#primarycommand "#stonebeing"
-#command "#stonebeing"
-#command "#ap -2"
-#command "#prot +2"
-#filterdesc "golem desc"
-#end
 
 #new
 #name "maritime"

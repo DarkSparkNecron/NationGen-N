@@ -1,4 +1,17 @@
 ﻿
+0.8.0-DEV3 (18th of August 2023)
+----------------------------------------------------------
+Note: DEV test versions have separate log, showing changes from one test to other. Release will contain all the changes
+
+Code
+----------------------------------------------------------
+
+Content
+-----------------------------------------------------------
+- Fixed the issue with two nationwide filters called "golem". Now they have separate names
+- Invisibility filter for mages fixed?
+
+=============================
 0.8.0-DEV2 (31th of July 2023)
 ----------------------------------------------------------
 Note: DEV test versions have separate log, showing changes from one test to other. Release will contain all the changes
@@ -16,7 +29,7 @@ Content
 - Wolf, ghost, ghoul, imp summoning sites made 6 times more powerful (summon 6 monsters instead of 1)
 - Added elemental summoning sites which summons 3 small elementals at a time, and one that summons 4 different small elementals
 - Naga basic units got RPcost cheaper from ~44 to ~19, as they are main population and shouldnt be treated like rare sacreds of patala
-- Starchilds had their RPcost fixed as well. From ~33 -> ~11. In current version they are the main population and can be so expensive for their performance
+- Starchilds had their RPcost fixed as well. From ~33 -> ~11. In current version they are the main population and cant be so expensive for their performance. Changes from DEV1 wasnt working lol
 - Atlantian standard bearers now separated class from regular infantry and has limit of one unit, so frog flags are down. Atlantian standards is also a weapon now, so no more handfight. Also, they can no longer be sacreds
 - Added hands and claws as a primitive-themed weapons for atlantians as honor for the loss of a useless flag parade.
 - Dirge Slave bug fixed. Thanks djmcgill

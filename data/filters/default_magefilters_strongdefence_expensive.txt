@@ -166,7 +166,7 @@
 #command "#invisible"
 #command "#gcost *1.2"
 #command "#spiritsight"
-#primarycommand #ethereal
+#primarycommand #invisible
 #power 4
 #filterdesc "invisible desc"
 #end
@@ -178,7 +178,7 @@
 #command "#invisible"
 #command "#gcost *1.2"
 #command "#spiritsight"
-#primarycommand #ethereal
+#primarycommand #invisible
 #tag "notfortier 2"
 #tag "notfortier 1"
 #power 4

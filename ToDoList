@@ -12,6 +12,10 @@ future) also separate mutated crabs into different role
 future) solve problem of atlantian sacreds having bare standard sometimes? Flag parade is still here
 future) balance out invisibility. Do something with spiritsighth, or at least define canceinc paths for the trait etc
 future) make scouts\assasins possibly invisible lol (probably shouldnt)
+futute) php make illitid foulspawns cheaper pr wise. and others php as well, since they spawns must be cheaper than others
+6)return missing body parts to foulspawns so they can be used as thugs
+7)for horses with burning hoofs change hoof into burning hoof. php add elemental riders
+8)check daevas&yazad for them being implemented correctly with adequate RP cost
 
 -------------------- Code
 1)remove magic:acces button (or at least check what it do) --Done. problem was already fixed for 0.7.13
@@ -31,3 +35,26 @@ ie probably redo this thing. Check if it affects cost of high-ranked commanders 
 
 //Check soulless shambler, so in future not only void and mutated themes, but also damned. or smth u know
 //make different natgen presets for future dom6 and natgenverse
+
+
+
+
+===================Very Far Plans
+Stole dragons from alexa, as well, as arcanians
+make rus into nacgen
+add burning one casters to abysians
+add elemental races.
+phlegra tyrants (also look at archon) etc to Gigantes
+3 headed dragons is the addition to 1 headed. its possible to generate dragons, especially using CoE sprites
+tritons, shades, vampires, php mermen&ichtysatyrs. sceleton nations aside dustwalkers, unfrozen php
+add presets: dom5, dom5_natgenverse, dom6. u know why
+
+мне нужно сделать всё основное до декабря, а именно:
+-0.8.0, те базовую версию генератора коллоний, ибо задолбало играть за увбилд без юнитов. Насколько я помню там ПД осталось и генератор мага + фильтр на железный гир. Сие муторно
+-Расширение этой штуки, чтобы можно было делать прибрежные колонии. И возможно рекрут специальных магов в горах каких-нибудь
+-После этого мега большая работа и ввод крысорыб + раса тритонов, возможно еще мерманов, но там геморно будет с их ватер шейпом возится
+-дальше по плану программе ввод эвентгена и генерации всяких чучел, сюда же относится то, что спеллы и эвенты могут юзать юнитов из наций. Тут гемороище то еще
+-На основе вышеперечисленного в темпе вальса делаются попкильщики-фриспавнеры и всякое такое интересное с эффектами на доминион
+Еще можно прилепить минимальный генератор богов. там для 1го и 2го доминионов
+а также замутить генерацию нац спеллов и предметусов
+но это не так принципиально
