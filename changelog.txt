@@ -5,6 +5,7 @@ Note: DEV test versions have separate log, showing changes from one test to othe
 
 Code
 ----------------------------------------------------------
+- MageWithAcces restriction description fixed
 
 Content
 -----------------------------------------------------------

@@ -17,7 +17,7 @@ public class MageWithAccessRestriction extends TwoListRestrictionWithComboBox<St
 
 	public MageWithAccessRestriction()
 	{
-		super("<html>Nation needs have 1 in 4 (100% random for 4 paths or better) access to at least one of the paths listed in the right box on a single mage</html>", "Magic: Mage with access");
+		super("<html>Nation needs have 1 in 4 (100% random for 4 paths or better) access to at all of the paths listed in the right box on a single mage</html>", "Magic: Mage with access");
 	
 		this.extraTextField = true;
 		this.textfieldDefaultText = "1";
