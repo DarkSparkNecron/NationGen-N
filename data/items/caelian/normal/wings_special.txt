@@ -1,13 +1,13 @@
 
 #newitem
-#id yazatawings_anywhere
+#id yazatawings_anywhere_special
 #gameid -1
 #sprite /graphics/caelian/yazatawings.png
 #eliteversion yazatawings_anywhere
 #theme yazata_troop
 #needs overlay yazatawings
 #define "#gcost 40"
-#define "#rpost 40020"
+#define "#rpost 9975" --40020
 #define "#hp +6"
 #define "#mr +4"
 #define "#mor +4"
@@ -27,7 +27,7 @@
 #define "#reclimit 1"
 #subrace "Yazata"
 #subraceprefix "yazata"
-#define "#descr 'Yazatas, or Adorable Ones, are semi-divine beings of an earlier age and the ancestors of most Caelians. Yazatas are attuned to air and are surrounded by an aura of splendor.'"
+#define "#descr 'SYazatas, or Adorable Ones, are semi-divine beings of an earlier age and the ancestors of most Caelians. Yazatas are attuned to air and are surrounded by an aura of splendor.'"
 #tag "winged"
 #sacredcostmulti 1.2
 #sacredratingmulti 1.4
@@ -39,11 +39,11 @@
 #id daevawings_anywhere
 #gameid -1
 #sprite /graphics/caelian/daevawings.png
-#eliteversion daevawings_anywhere
+#eliteversion daevawings_anywhere_special
 #theme daeva_troop
 #needs overlay daevawings
 #define "#gcost 50"
-#define "#rpcost 50030"
+#define "#rpcost 9975" --50030
 #define "#hp +6"
 #define "#mr +4"
 #define "#mor +4"
@@ -63,7 +63,7 @@
 #define "#reclimit 1"
 #subrace "Daeva"
 #subraceprefix "daeva"
-#define "#descr 'Daevas are demonic beings of an earlier age and the ancestors of the Mairya and Raptor clans. Daevas are attuned to fire and are surrounded by an aura of fear.'"
+#define "#descr 'SDaevas are demonic beings of an earlier age and the ancestors of the Mairya and Raptor clans. Daevas are attuned to fire and are surrounded by an aura of fear.'"
 #tag "winged"
 #sacredcostmulti 1.2
 #sacredratingmulti 1.4

@@ -1,0 +1,16 @@
+#newitem
+#name "poison sling"
+#gameid 167
+#sprite /graphics/weapon/bowman/sling.png
+#offsetx -2 
+#theme elite
+#enditem
+
+#newitem
+#name "poison short bow"
+#gameid 594
+#sprite /graphics/weapon/bowman/shortbow.png
+#offsetx -2
+#offsety -1
+#needs quiver quiver
+#enditem

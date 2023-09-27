@@ -1,7 +1,7 @@
 --- Hands belonging to an armor set should be given id of the lowest prot armor they go with if you want to avoid naked people with plate gloves.
 
 #newitem
-#id spirehornwings-elite
+#id spirehornwings_elite
 #elite
 #sacred
 #gameid -1
@@ -22,7 +22,7 @@
 #enditem
 
 #newitem
-#id airyawings-elite
+#id airyawings_elite
 #elite
 #sacred
 #gameid -1
@@ -44,7 +44,7 @@
 #enditem
 
 #newitem
-#id raptorwings-elite
+#id raptorwings_elite
 #elite
 #sacred
 #gameid -1
@@ -68,7 +68,7 @@
 #enditem
 
 #newitem
-#id yazatawings-elite
+#id yazatawings_elite
 #elite
 #sacred
 #gameid -1
@@ -79,7 +79,7 @@
 #theme yazata_elite
 #needs overlay yazatawings
 #define "#gcost 40"
-#define "#rpost 40020"
+#define "#rpost 9985" --40020
 #define "#hp +6"
 #define "#mr +4"
 #define "#mor +4"
@@ -108,7 +108,7 @@
 #enditem
 
 #newitem
-#id daevawings-elite
+#id daevawings_elite
 #elite
 #sacred
 #gameid -1
@@ -119,7 +119,7 @@
 #theme daeva_elite
 #needs overlay daevawings
 #define "#gcost 50"
-#define "#rpcost 50030"
+#define "#rpcost 9985" --50030
 #define "#hp +6"
 #define "#mr +4"
 #define "#mor +4"
@@ -149,7 +149,7 @@
 #enditem
 
 #newitem
-#id mairyawings-elite
+#id mairyawings_elite
 #elite
 #sacred
 #gameid -1
@@ -176,7 +176,7 @@
 #enditem
 
 #newitem
-#id hybridwings-elite
+#id hybridwings_elite
 #elite
 #sacred
 #gameid -1
@@ -199,7 +199,7 @@
 #enditem
 
 #newitem
-#id nowings-elite
+#id nowings_elite
 #elite
 #sacred
 #gameid -1

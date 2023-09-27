@@ -13,9 +13,11 @@ future) solve problem of atlantian sacreds having bare standard sometimes? Flag 
 future) balance out invisibility. Do something with spiritsighth, or at least define canceinc paths for the trait etc
 future) make scouts\assasins possibly invisible lol (probably shouldnt)
 futute) php make illitid foulspawns cheaper pr wise. and others php as well, since they spawns must be cheaper than others
-6)return missing body parts to foulspawns so they can be used as thugs
+6)return missing body parts to foulspawns so they can be used as thugs (everyone has human parts, but no hands - so custom bodyparts in the future?)
 7)for horses with burning hoofs change hoof into burning hoof. php add elemental riders
-8)check daevas&yazad for them being implemented correctly with adequate RP cost
+8)check daevas&yazad for them being implemented correctly with adequate RP cost (caeli 41, daeva 51. make them ~20.
+daevas are  made through wings, but their rpcost doesnt overwrite the base. ok its not the case, bases are empty. its the wings. specialwings are different actually so idk, but now i change regular ones
+so... 3 files for different wings. wow ill hive a nightmare here. btw daevas are 16now, and idk why yazad got additional 10k line from. ok its a race file)
 
 -------------------- Code
 1)remove magic:acces button (or at least check what it do) --Done. problem was already fixed for 0.7.13
@@ -32,7 +34,7 @@ ie probably redo this thing. Check if it affects cost of high-ranked commanders 
 1)add PREVIEW sites for montag units (foulspawns) --Done
 2)sacred power slider now will do something --Done (thnks geepope)
 3)generate uwrec units for uwbuild nations.
-4)fix an issue with poison slings getting untyped damage when recieving additional effect
+4)fix an issue with poison slings getting untyped damage when recieving additional effect (so basically CustomitemGen ignores dt_poisin and other and applies 'magicitem' ontop)
 
 //Check soulless shambler, so in future not only void and mutated themes, but also damned. or smth u know
 //make different natgen presets for future dom6 and natgenverse
