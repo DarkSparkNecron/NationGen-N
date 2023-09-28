@@ -11,6 +11,7 @@ Content
 -----------------------------------------------------------
 - Fixed the issue with two nationwide filters called "golem". Now they have separate names
 - Invisibility filter for mages fixed?
+- Yazad&Daeva RPcost down from 40-50 to 16, for similar reasons as nagas. But Caelians are messed so bugs expected now, since i tried to fix them
 
 =============================
 0.8.0-DEV2 (31th of July 2023)

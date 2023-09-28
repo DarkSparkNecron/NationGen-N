@@ -79,7 +79,7 @@
 #theme yazata_elite
 #needs overlay yazatawings
 #define "#gcost 40"
-#define "#rpost 9985" --40020
+#define "#rpcost 9985" --40020
 #define "#hp +6"
 #define "#mr +4"
 #define "#mor +4"

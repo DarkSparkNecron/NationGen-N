@@ -17,7 +17,7 @@ futute) php make illitid foulspawns cheaper pr wise. and others php as well, sin
 7)for horses with burning hoofs change hoof into burning hoof. php add elemental riders
 8)check daevas&yazad for them being implemented correctly with adequate RP cost (caeli 41, daeva 51. make them ~20.
 daevas are  made through wings, but their rpcost doesnt overwrite the base. ok its not the case, bases are empty. its the wings. specialwings are different actually so idk, but now i change regular ones
-so... 3 files for different wings. wow ill hive a nightmare here. btw daevas are 16now, and idk why yazad got additional 10k line from. ok its a race file)
+so... 3 files for different wings. wow ill hive a nightmare here. btw daevas are 16now, and idk why yazad got additional 10k line from. ok its a race file) -Done?
 
 -------------------- Code
 1)remove magic:acces button (or at least check what it do) --Done. problem was already fixed for 0.7.13
