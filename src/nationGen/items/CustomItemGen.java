@@ -79,11 +79,28 @@ public class CustomItemGen {
 						i = miten;
 				}
 				
+				/*if(i.olditem.id.equals("167"))
+				{
+					System.out.println("=======");
+					for(Command c: i.commands)
+					{
+						System.out.println(c.command);
+					}
+					System.out.println("==");
+					for(Command c: i.olditem.commands)
+					{
+						System.out.println(c.command);
+					}
+					System.out.println("==");
+					for(Command c: i.values) //tuta
+					{
+						System.out.println(c.command);
+					}
+				}*/
 				
 				for(Command c : mitem.getCommands())
 				{
 					String key = c.command;
-					
 					
 					if(c.args.size() > 0)
 					{
@@ -350,6 +367,14 @@ public class CustomItemGen {
 					if(db.GetValue(item.id, def).equals("1"))
 						newitem.setValue("#pierce");
 				}
+				//else if(def.equals("dt_poison")||def.equals("poison")) //doesnt help
+				//{
+				//	if(db.GetValue(item.id, def).equals("1"))
+				//	{
+				//		newitem.setValue("#dt_poison");
+				//		newitem.setValue("#poison");
+				//	}
+				//}
 				else if(def.equals("lgt"))
 				{
 					if(db.GetInteger(item.id, "lgt") > 0)
