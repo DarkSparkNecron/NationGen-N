@@ -34,7 +34,7 @@ ie probably redo this thing. Check if it affects cost of high-ranked commanders 
 1)add PREVIEW sites for montag units (foulspawns) --Done
 2)sacred power slider now will do something --Done (thnks geepope)
 3)generate uwrec units for uwbuild nations.
-4)fix an issue with poison slings getting untyped damage when recieving additional effect (so basically CustomitemGen ignores dt_poisin and other and applies 'magicitem' ontop)
+4)fix an issue with poison slings getting untyped damage when recieving additional effect (so basically CustomitemGen ignores dt_poisin and other and applies 'magicitem' ontop) -Done
 
 //Check soulless shambler, so in future not only void and mutated themes, but also damned. or smth u know
 //make different natgen presets for future dom6 and natgenverse

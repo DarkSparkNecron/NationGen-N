@@ -367,14 +367,14 @@ public class CustomItemGen {
 					if(db.GetValue(item.id, def).equals("1"))
 						newitem.setValue("#pierce");
 				}
-				//else if(def.equals("dt_poison")||def.equals("poison")) //doesnt help
-				//{
-				//	if(db.GetValue(item.id, def).equals("1"))
-				//	{
-				//		newitem.setValue("#dt_poison");
-				//		newitem.setValue("#poison");
-				//	}
-				//}
+				else if(def.equals("dt_poison")||def.equals("poison")) //Helps, but can mess things
+				{
+					if(db.GetValue(item.id, def).equals("1"))
+					{
+						newitem.setValue("#dt_poison");
+						newitem.setValue("#poison");
+					}
+				}
 				else if(def.equals("lgt"))
 				{
 					if(db.GetInteger(item.id, "lgt") > 0)

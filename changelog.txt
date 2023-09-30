@@ -6,6 +6,7 @@ Note: DEV test versions have separate log, showing changes from one test to othe
 Code
 ----------------------------------------------------------
 - MageWithAcces restriction description fixed
+- Poison sling issue. Slight changes to make them work (that can mess thing prob.). Also it turn out DB converter is outdated and i need to reinvent bitmasks...
 
 Content
 -----------------------------------------------------------
